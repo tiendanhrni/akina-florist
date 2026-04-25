@@ -1,5 +1,8 @@
 import './globals.css'
+import { draftMode } from 'next/headers'
 import FloatButtons from '@/components/FloatButtons'
+import DraftModeBanner from '@/components/DraftModeBanner'
+import VisualEditingComponent from '@/components/VisualEditing'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
 
@@ -16,12 +19,15 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const { isEnabled: isDraftMode } = await draftMode()
   return (
     <html lang="vi">
       <body>
+        {isDraftMode && <DraftModeBanner />}
         {children}
         <FloatButtons />
+        {isDraftMode && <VisualEditingComponent />}
       </body>
     </html>
   )
