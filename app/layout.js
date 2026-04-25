@@ -1,7 +1,6 @@
 import './globals.css'
 import { draftMode } from 'next/headers'
 import FloatButtons from '@/components/FloatButtons'
-import DraftModeBanner from '@/components/DraftModeBanner'
 import VisualEditingComponent from '@/components/VisualEditing'
 import { getSiteSettings } from '@/lib/queries'
 
@@ -34,7 +33,6 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="vi">
       <body>
-        {isDraftMode && <DraftModeBanner />}
         {children}
         <FloatButtons s={s} />
         {isDraftMode && <VisualEditingComponent />}
