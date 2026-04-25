@@ -81,8 +81,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: rgba(255,255,255,0.57);
   backdrop-filter: blur(20px);
