@@ -27,11 +27,14 @@ export default async function Home() {
         <h1 className="sr-only">{s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist'}</h1>
         <HeroBanner banners={banners || []} />
         <CategorySlider categories={categories || []} />
-        <section style={{ maxHeight: 'calc(100vh - 72px)', overflow: 'hidden', background: '#111', aspectRatio: '16/9' }}>
-          <video autoPlay muted loop playsInline preload="metadata" poster={posterSrc}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
-            <source src={videoSrc} type="video/mp4" />
-          </video>
+        <section style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#111', position: 'relative' }}>
+          <video
+  autoPlay muted loop playsInline preload="metadata"
+  poster={posterSrc}
+  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+>
+  <source src={videoSrc} type="video/mp4" />
+</video>
         </section>
         <StorySection s={s} />
         <WhySection items={whyItems || []} s={s} />
