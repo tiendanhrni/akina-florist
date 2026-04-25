@@ -9,9 +9,5 @@ export const viewport = {
 }
 
 export default function StudioLayout({ children }) {
-  return (
-    <html lang="vi">
-      <body style={{ margin: 0 }}>{children}</body>
-    </html>
-  )
+  return children
 }
