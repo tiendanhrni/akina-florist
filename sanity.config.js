@@ -4,7 +4,7 @@ import { visionTool } from '@sanity/vision'
 import { media, mediaAssetSource } from 'sanity-plugin-media'
 import { presentationTool } from 'sanity/presentation'
 import { schemaTypes } from './sanity/schemas/all'
-import StudioDashboard from './sanity/plugins/StudioDashboard'
+import StudioDashboard from './sanity/plugins/StudioDashboard.jsx'
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'q3i5b990'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
