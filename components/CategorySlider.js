@@ -1,3 +1,5 @@
+'use client'
+import { useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from './CategorySlider.module.css'
@@ -14,30 +16,41 @@ const defaultCategories = [
 const bgs = ['#c8b8a8','#b8c8b8','#c0b0c0','#c8c0b0','#b0c0c0','#c0b0b8']
 
 export default function CategorySlider({ categories }) {
+  const trackRef = useRef(null)
   const items = categories.length > 0 ? categories : defaultCategories
+
+  const scroll = (dir) => {
+    if (trackRef.current) {
+      trackRef.current.scrollBy({ left: dir * 420, behavior: 'smooth' })
+    }
+  }
 
   return (
     <section className={styles.section}>
-      <div className={styles.track}>
+      <div className={styles.track} ref={trackRef}>
         {items.map((cat, i) => (
-          <div key={cat._id} className={`${styles.card} category-card`}>
-            <Link href={`/san-pham/${cat.slug?.current || cat.slug}`} className={styles.imgLink}>
-              {cat.image ? (
-                <Image src={cat.image} alt={cat.title} fill style={{ objectFit: 'cover', transition: 'transform 0.5s' }}
-                  sizes="280px" />
-              ) : (
-                <div style={{ background: bgs[i % bgs.length], width: '100%', height: '100%' }} />
-              )}
-            </Link>
-            <div className={styles.labelWrap}>
-              <Link href={`/san-pham/${cat.slug?.current || cat.slug}`} className={styles.label}>
-                <div className="cat-label-bg" />
-                <span className="cat-label-text">{cat.title}</span>
-              </Link>
+          <Link key={cat._id}
+            href={`/san-pham/${cat.slug?.current || cat.slug}`}
+            className={styles.card}>
+            <div className={styles.img}>
+              {cat.image
+                ? <Image src={cat.image} alt={cat.title} fill style={{ objectFit: 'cover', transition: 'transform 0.5s' }} sizes="400px" />
+                : <div style={{ background: bgs[i % bgs.length], width: '100%', height: '100%' }} />
+              }
+              <div className={styles.overlay} />
             </div>
-          </div>
+            <div className={styles.label}>{cat.title}</div>
+          </Link>
         ))}
       </div>
+
+      {/* Nút prev/next */}
+      <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={() => scroll(-1)} aria-label="Trước">
+        &#8592;
+      </button>
+      <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={() => scroll(1)} aria-label="Sau">
+        &#8594;
+      </button>
     </section>
   )
 }
