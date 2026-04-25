@@ -1,0 +1,15 @@
+.section { padding: 2rem 0 2rem 1.5rem; overflow: hidden; background: #fff; }
+.track { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-right: 1.5rem; }
+.track::-webkit-scrollbar { display: none; }
+.card { flex-shrink: 0; width: 280px; position: relative; aspect-ratio: 4/6; overflow: hidden; }
+.imgLink { display: block; position: absolute; inset: 0; }
+.labelWrap { position: absolute; bottom: 1rem; left: 0.5rem; right: 0.5rem; z-index: 2; }
+.label {
+  display: block; width: 100%; padding: 0.75rem 1.25rem;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+@media (max-width: 768px) { .card { width: 220px; } }
