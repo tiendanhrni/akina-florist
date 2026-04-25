@@ -1,0 +1,9 @@
+.section { padding: 2rem 0 2rem 1.5rem; overflow: hidden; background: #fff; }
+.track { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; padding-right: 1.5rem; }
+.track::-webkit-scrollbar { display: none; }
+.card { flex-shrink: 0; width: 286px; aspect-ratio: 1; position: relative; overflow: hidden; display: block; }
+.card:hover img { transform: scale(1.05); }
+.overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; padding: 1.5rem; transition: background 0.3s; }
+.card:hover .overlay { background: rgba(0,0,0,0.4); }
+.overlay p { color: #fff; font-size: 13px; text-align: center; opacity: 0; transition: opacity 0.3s; }
+.card:hover .overlay p { opacity: 1; }

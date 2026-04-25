@@ -1,0 +1,15 @@
+.hero { position: relative; height: 45vh; display: flex; align-items: flex-end; overflow: hidden; background: #2a2a2a; }
+.overlay { position: absolute; inset: 0; background: linear-gradient(to top,rgba(0,0,0,0.6),rgba(0,0,0,0.2)); }
+.content { position: relative; z-index: 2; padding: 0 2rem 3rem; }
+.desc { color: rgba(255,255,255,0.75); font-size: 14px; margin-top: 0.75rem; max-width: 500px; line-height: 1.7; }
+.catNav { border-bottom: 0.5px solid rgba(0,0,0,0.1); background: #fff; position: sticky; top: 113px; z-index: 40; }
+.catNavInner { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+.catNavInner::-webkit-scrollbar { display: none; }
+.catTab { flex-shrink: 0; padding: 1rem 1.5rem; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(0,0,0,0.5); border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.catTab:hover { color: #1a1a1a; }
+.active { color: #577057; border-bottom-color: #577057; font-weight: 500; }
+.section { padding: 3rem 0 5rem; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.empty { text-align: center; padding: 5rem 0; color: rgba(0,0,0,0.4); line-height: 2; }
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 768px) { .grid { grid-template-columns: repeat(2,1fr); } }
