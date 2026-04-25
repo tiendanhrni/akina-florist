@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import styles from './Header.module.css'
 
-export default function Header() {
+export default function Header({ navPages = [] }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -13,6 +13,10 @@ export default function Header() {
           <Link href="/san-pham">Đặt hoa</Link>
           <Link href="/ve-akina-florist">Giới thiệu</Link>
           <Link href="/academy-va-workshop">Workshop & Academy</Link>
+          {/* Các trang tùy chỉnh có showInNav = true */}
+          {navPages.map(p => (
+            <Link key={p.slug} href={`/trang/${p.slug}`}>{p.navLabel || p.title}</Link>
+          ))}
         </div>
 
         <Link href="/" className={styles.logo}>AKINA FLORIST</Link>
@@ -33,6 +37,9 @@ export default function Header() {
           <Link href="/san-pham" onClick={() => setMenuOpen(false)}>Đặt hoa</Link>
           <Link href="/ve-akina-florist" onClick={() => setMenuOpen(false)}>Giới thiệu</Link>
           <Link href="/academy-va-workshop" onClick={() => setMenuOpen(false)}>Workshop & Academy</Link>
+          {navPages.map(p => (
+            <Link key={p.slug} href={`/trang/${p.slug}`} onClick={() => setMenuOpen(false)}>{p.navLabel || p.title}</Link>
+          ))}
           <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
           <Link href="/du-an" onClick={() => setMenuOpen(false)}>Dự án</Link>
           <Link href="/chinh-sach" onClick={() => setMenuOpen(false)}>Chính sách</Link>
