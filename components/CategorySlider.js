@@ -21,7 +21,7 @@ export default function CategorySlider({ categories }) {
 
   const scroll = (dir) => {
     if (trackRef.current) {
-      trackRef.current.scrollBy({ left: dir * 420, behavior: 'smooth' })
+      trackRef.current.scrollBy({ left: dir * 450, behavior: 'smooth' })
     }
   }
 
@@ -32,24 +32,38 @@ export default function CategorySlider({ categories }) {
           <Link key={cat._id}
             href={`/san-pham/${cat.slug?.current || cat.slug}`}
             className={styles.card}>
+            {/* Ảnh */}
             <div className={styles.img}>
               {cat.image
-                ? <Image src={cat.image} alt={cat.title} fill style={{ objectFit: 'cover', transition: 'transform 0.5s' }} sizes="400px" />
+                ? <Image src={cat.image} alt={cat.title} fill
+                    style={{ objectFit: 'cover' }} sizes="432px" />
                 : <div style={{ background: bgs[i % bgs.length], width: '100%', height: '100%' }} />
               }
-              <div className={styles.overlay} />
             </div>
-            <div className={styles.label}>{cat.title}</div>
+            {/* Label với hiệu ứng slide */}
+            <div className={styles.labelWrap}>
+              <span className={styles.label}>
+                <span className={styles.labelText}>{cat.title}</span>
+              </span>
+            </div>
           </Link>
         ))}
       </div>
 
-      {/* Nút prev/next */}
-      <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={() => scroll(-1)} aria-label="Trước">
-        &#8592;
+      {/* Nút prev */}
+      <button className={`${styles.arrow} ${styles.arrowLeft}`}
+        onClick={() => scroll(-1)} aria-label="Trước">
+        <svg className={styles.arrowIcon} viewBox="0 0 12 20" fill="none">
+          <path d="M9 17.12L1.5 9.62L9 2.12" stroke="black" strokeWidth="3" strokeLinecap="square" strokeLinejoin="round"/>
+        </svg>
       </button>
-      <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={() => scroll(1)} aria-label="Sau">
-        &#8594;
+
+      {/* Nút next */}
+      <button className={`${styles.arrow} ${styles.arrowRight}`}
+        onClick={() => scroll(1)} aria-label="Sau">
+        <svg className={styles.arrowIcon} viewBox="0 0 12 20" fill="none" style={{ transform: 'rotate(180deg)' }}>
+          <path d="M9 17.12L1.5 9.62L9 2.12" stroke="black" strokeWidth="3" strokeLinecap="square" strokeLinejoin="round"/>
+        </svg>
       </button>
     </section>
   )
