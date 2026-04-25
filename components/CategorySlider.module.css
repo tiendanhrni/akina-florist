@@ -1,15 +1,76 @@
-.section { padding: 2rem 0 2rem 1.5rem; overflow: hidden; background: #fff; }
-.track { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-right: 1.5rem; }
-.track::-webkit-scrollbar { display: none; }
-.card { flex-shrink: 0; width: 280px; position: relative; aspect-ratio: 4/6; overflow: hidden; }
-.imgLink { display: block; position: absolute; inset: 0; }
-.labelWrap { position: absolute; bottom: 1rem; left: 0.5rem; right: 0.5rem; z-index: 2; }
-.label {
-  display: block; width: 100%; padding: 0.75rem 1.25rem;
-  position: relative; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(0,0,0,0.2);
-  backdrop-filter: blur(4px);
-  cursor: pointer;
+.section { position: relative; overflow: hidden; }
+
+.track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 0;
 }
-@media (max-width: 768px) { .card { width: 220px; } }
+.track::-webkit-scrollbar { display: none; }
+
+.card {
+  flex: 0 0 25%;
+  min-width: 320px;
+  position: relative;
+  scroll-snap-align: start;
+  cursor: pointer;
+  display: block;
+}
+.card:hover .img img { transform: scale(1.04); }
+
+.img {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: #e8ddd5;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
+  transition: opacity 0.3s;
+}
+
+.label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1.25rem;
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  z-index: 2;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  color: #1a1a1a;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.arrow:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.arrowLeft { left: 1rem; }
+.arrowRight { right: 1rem; }
+
+@media (max-width: 768px) {
+  .card { flex: 0 0 70%; min-width: 260px; }
+  .arrow { display: none; }
+}
