@@ -1,4 +1,5 @@
 import product from './product'
+import siteSettings from './siteSettings'
 import {
   category,
   banner,
@@ -11,6 +12,9 @@ import {
 } from './index'
 
 export const schemaTypes = [
+  // Cài đặt chung (singleton)
+  siteSettings,
+  // Nội dung
   product,
   category,
   banner,
