@@ -10,9 +10,10 @@ const defaultItems = [
   { _id: '4', title: 'Nguồn nguyên liệu đa dạng & luôn sẵn sàng', description: 'Hoa tươi nội địa và nhập khẩu được cập nhật mỗi ngày — đảm bảo nguồn nguyên liệu phong phú, tươi mới và sẵn sàng cho mọi thiết kế.', image: null },
 ]
 
-export default function WhySection({ items }) {
+export default function WhySection({ items, s }) {
   const [active, setActive] = useState(0)
-  const data = items.length > 0 ? items : defaultItems
+  const data = items?.length > 0 ? items : defaultItems
+  const title = s?.whySectionTitle || 'Vì sao Akina được yêu thích?'
 
   return (
     <section className={styles.section}>
@@ -22,11 +23,10 @@ export default function WhySection({ items }) {
       )}
       <div className={styles.fadeTop} />
       <div className={styles.fadeBot} />
-      <h2 className={`${styles.title} display-3`}>Vì sao Akina được yêu thích?</h2>
+      <h2 className={`${styles.title} display-3`}>{title}</h2>
       <div className={styles.layout}>
         <div className={styles.card}>
-          <div className={styles.dotTR} />
-          <div className={styles.dotBR} />
+          <div className={styles.dotTR} /><div className={styles.dotBR} />
           <h3 className={`${styles.cardTitle} display-3`}>{data[active].title}</h3>
           <p className={`${styles.cardDesc} body-3`}>{data[active].description}</p>
         </div>
