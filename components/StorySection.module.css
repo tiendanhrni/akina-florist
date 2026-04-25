@@ -1,0 +1,60 @@
+.section {
+  background: #fff;
+  padding: 5.5rem 1.5rem;
+}
+
+.inner {
+  max-width: 674px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 3rem;
+}
+
+.hw {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 400;
+  color: #577057;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  color: #1a1a1a;
+  margin-top: 0.25rem;
+}
+
+.quote {
+  position: relative;
+  padding: 0 1.5rem;
+}
+
+.quoteIcon {
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  width: 22px;
+  height: 14px;
+  background: #577057;
+  clip-path: polygon(0 100%, 50% 0%, 100% 100%);
+  opacity: 0.55;
+}
+
+.body {
+  font-size: 15px;
+  line-height: 2;
+  color: #333;
+  font-weight: 300;
+}
+
+.body p + p {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 3rem 1.5rem; }
+  .quote { padding: 0 0.5rem; }
+}
