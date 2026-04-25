@@ -1,6 +1,6 @@
 .header {
   position: sticky;
-  top: 41px;
+  top: 0;
   z-index: 50;
   background: #fff;
   border-bottom: 0.5px solid rgba(0,0,0,0.08);
@@ -18,22 +18,26 @@
   gap: 2rem;
 }
 .left a, .right a {
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #1a1a1a;
-  opacity: 0.7;
+  color: #111111;
+  opacity: 0.85;
   transition: opacity 0.2s;
 }
 .left a:hover, .right a:hover { opacity: 1; }
 .logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  color: #1a1a1a;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: #111111;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.lang { font-size: 10px; opacity: 0.45; letter-spacing: 0.1em; cursor: pointer; }
+.lang { font-size: 11px; opacity: 0.45; letter-spacing: 0.1em; cursor: pointer; }
 .burger {
   display: none;
   flex-direction: column;
@@ -44,7 +48,7 @@
   display: block;
   width: 22px;
   height: 1.5px;
-  background: #1a1a1a;
+  background: #111111;
   transition: all 0.3s;
 }
 .mobileMenu {
@@ -56,15 +60,19 @@
   gap: 1.25rem;
 }
 .mobileMenu a {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #1a1a1a;
-  opacity: 0.7;
+  color: #111111;
 }
-
 @media (max-width: 768px) {
   .left, .right { display: none; }
   .burger { display: flex; }
-  .logo { font-size: 18px; letter-spacing: 0.15em; }
+  .logo {
+    position: static;
+    transform: none;
+    font-size: 20px;
+    letter-spacing: 0.15em;
+  }
 }
