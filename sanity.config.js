@@ -2,10 +2,20 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { media, mediaAssetSource } from 'sanity-plugin-media'
+import { presentationTool } from 'sanity/presentation'
 import { schemaTypes } from './sanity/schemas/all'
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'q3i5b990'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+const previewSecret = process.env.SANITY_PREVIEW_SECRET || 'akina-preview-2025'
+
+// URL website để preview (production hoặc local)
+const previewUrl =
+  typeof window !== 'undefined'
+    ? window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'https://akina-florist.vercel.app'
+    : 'https://akina-florist.vercel.app'
 
 export default defineConfig({
   name: 'akina-florist',
@@ -13,7 +23,19 @@ export default defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
+
   plugins: [
+    // 🖥️ Presentation Tool — Visual Editing chính
+    presentationTool({
+      previewUrl: {
+        origin: previewUrl,
+        preview: '/',
+        draftMode: {
+          enable: `/api/draft?secret=${previewSecret}`,
+        },
+      },
+    }),
+
     structureTool({
       structure: (S) =>
         S.list()
@@ -48,22 +70,19 @@ export default defineConfig({
               .child(S.documentTypeList('project').title('Dự án')),
           ])
     }),
+
     visionTool(),
     media(),
   ],
+
   schema: {
     types: schemaTypes,
   },
+
   form: {
-    file: {
-      assetSources: (previousAssetSources) => {
-        return previousAssetSources.filter((assetSource) => assetSource !== mediaAssetSource)
-      },
-    },
     image: {
-      assetSources: (previousAssetSources) => {
-        return previousAssetSources.filter((assetSource) => assetSource !== mediaAssetSource)
-      },
+      assetSources: (previousAssetSources) =>
+        previousAssetSources.filter((s) => s !== mediaAssetSource),
     },
   },
 })
