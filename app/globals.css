@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Tenor+Sans&family=Jost:wght@300;400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -10,13 +10,19 @@
   --text-muted: rgba(26,26,26,0.5);
   --bg: #ffffff;
   --bg-warm: #faf8f5;
-  --serif: 'Cormorant Garamond', serif;
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --serif-alt: 'Tenor Sans', 'Cormorant Garamond', serif;
   --sans: 'Jost', sans-serif;
   --nav-height: 72px;
   --prehead-height: 41px;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
 body {
   font-family: var(--sans);
@@ -24,24 +30,29 @@ body {
   color: var(--text);
   background: var(--bg);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 a { text-decoration: none; color: inherit; }
 button { border: none; background: none; cursor: pointer; font-family: inherit; }
 img { max-width: 100%; display: block; }
 
-/* Typography */
+/* Typography — giống phong cách Ren Florist */
 .display-4 {
   font-family: var(--serif);
   font-size: clamp(36px, 6vw, 64px);
   font-weight: 300;
   line-height: 1.05;
+  letter-spacing: 0.01em;
+  font-feature-settings: 'kern' 1, 'liga' 1;
 }
 .display-3 {
   font-family: var(--serif);
   font-size: clamp(28px, 4vw, 48px);
   font-weight: 300;
   line-height: 1.1;
+  letter-spacing: 0.01em;
+  font-feature-settings: 'kern' 1, 'liga' 1;
 }
 .hw-1 {
   font-family: var(--serif);
@@ -49,9 +60,22 @@ img { max-width: 100%; display: block; }
   font-weight: 400;
   color: var(--primary);
   line-height: 1;
+  letter-spacing: -0.01em;
 }
-.body-3 { font-size: 13px; font-weight: 300; line-height: 1.8; }
-.title-2 { font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; }
+.body-3 {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+}
+.title-2 {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+}
+
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 /* Container */
@@ -88,18 +112,6 @@ img { max-width: 100%; display: block; }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Swiper custom */
-.swiper-pagination-bullet {
-  width: 48px !important;
-  height: 4px !important;
-  border-radius: 2px !important;
-  background: rgba(255,255,255,0.35) !important;
-  opacity: 1 !important;
-}
-.swiper-pagination-bullet-active {
-  background: #577057 !important;
 }
 
 /* Product card hover image */
@@ -178,10 +190,7 @@ img { max-width: 100%; display: block; }
   transition: all 0.3s;
   cursor: pointer;
 }
-.btn-outline:hover {
-  background: var(--text);
-  color: #fff;
-}
+.btn-outline:hover { background: var(--text); color: #fff; }
 .btn-green {
   display: inline-block;
   padding: 12px 32px;
@@ -216,3 +225,13 @@ img { max-width: 100%; display: block; }
   inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
 }
+
+/* Swiper custom */
+.swiper-pagination-bullet {
+  width: 48px !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+  background: rgba(255,255,255,0.35) !important;
+  opacity: 1 !important;
+}
+.swiper-pagination-bullet-active { background: #577057 !important; }

@@ -1,7 +1,7 @@
 import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getSanityData } from '@/lib/sanity'
+import { getWorkshops } from '@/lib/queries'
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -10,14 +10,6 @@ export const revalidate = 60
 export const metadata = {
   title: 'Workshop & Academy - Akina Florist',
   description: 'Tham gia các khóa học cắm hoa tại Akina Florist. Khám phá khả năng sáng tạo của bản thân.',
-}
-
-async function getWorkshops() {
-  return getSanityData(`*[_type == "workshop"] | order(_createdAt desc) {
-    _id, title, description, duration, price, schedule, maxStudents,
-    "slug": slug.current,
-    "image": image.asset->url
-  }`)
 }
 
 export default async function WorkshopPage() {
@@ -39,7 +31,7 @@ export default async function WorkshopPage() {
 
         <section className={styles.intro}>
           <div className="container">
-            <p>Tham gia workshop cắm hoa tại Akina Florist để khám phá khả năng sáng tạo của bản thân và mang về những bó hoa độc đáo, đồng thời kết nối với những người có cùng đam mê.</p>
+            <p>Tham gia workshop cắm hoa tại Akina Florist để khám phá khả năng sáng tạo của bản thân và mang về những bó hoa độc đáo.</p>
           </div>
         </section>
 
@@ -51,7 +43,8 @@ export default async function WorkshopPage() {
                   <div key={w._id} className={styles.card}>
                     <div className={styles.cardImg}>
                       {w.image ? (
-                        <Image src={w.image} alt={w.title} fill style={{ objectFit: 'cover', transition: 'transform 0.5s' }} sizes="600px" />
+                        <Image src={w.image} alt={w.title} fill
+                          style={{ objectFit: 'cover', transition: 'transform 0.5s' }} sizes="600px" />
                       ) : (
                         <div style={{ background: '#d5e0d8', width: '100%', height: '100%' }} />
                       )}
@@ -75,7 +68,7 @@ export default async function WorkshopPage() {
             ) : (
               <div className={styles.empty}>
                 <h2 className="display-3">Sắp ra mắt</h2>
-                <p>Các khóa học mới đang được chuẩn bị. Liên hệ với chúng tôi để được thông báo sớm nhất.</p>
+                <p>Các khóa học mới đang được chuẩn bị.</p>
                 <a href="tel:0933486388" className="btn-outline" style={{ display: 'inline-block', marginTop: '2rem' }}>
                   Liên hệ ngay
                 </a>

@@ -1,7 +1,7 @@
 import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getSanityData } from '@/lib/sanity'
+import { getProjects } from '@/lib/queries'
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -10,14 +10,6 @@ export const revalidate = 60
 export const metadata = {
   title: 'Dự án - Akina Florist',
   description: 'Khám phá các dự án trang trí hoa sự kiện của Akina Florist.',
-}
-
-async function getProjects() {
-  return getSanityData(`*[_type == "project"] | order(date desc) {
-    _id, title, client, category, date,
-    "slug": slug.current,
-    "cover": coverImage.asset->url
-  }`)
 }
 
 export default async function DuAnPage() {
@@ -48,7 +40,8 @@ export default async function DuAnPage() {
                     <div className={styles.cardImg}>
                       {p.cover ? (
                         <Image src={p.cover} alt={p.title} fill
-                          style={{ objectFit: 'cover', transition: 'transform 0.6s' }} sizes="(max-width:768px) 100vw, 50vw" />
+                          style={{ objectFit: 'cover', transition: 'transform 0.6s' }}
+                          sizes="(max-width:768px) 100vw, 50vw" />
                       ) : (
                         <div style={{ background: '#e8ddd5', width: '100%', height: '100%' }} />
                       )}
