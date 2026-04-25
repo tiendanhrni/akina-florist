@@ -2,44 +2,43 @@ import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
-import { getCategories, getBestSellers } from '@/lib/queries'
+import { getCategories, getBestSellers, getSiteSettings } from '@/lib/queries'
 import styles from './page.module.css'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Đặt hoa - Akina Florist',
-  description: 'Khám phá các thiết kế hoa độc đáo tại Akina Florist. Hoa bó, giỏ hoa, crystal box và nhiều hơn nữa.',
+export async function generateMetadata() {
+  const s = await getSiteSettings()
+  return {
+    title: 'Đặt hoa',
+    description: s?.shopPageIntro || 'Khám phá các thiết kế hoa độc đáo tại Akina Florist.',
+  }
 }
 
 export default async function SanPhamPage() {
-  const [categories, bestSellers] = await Promise.all([
-    getCategories(),
-    getBestSellers(),
+  const [categories, bestSellers, s] = await Promise.all([
+    getCategories(), getBestSellers(), getSiteSettings(),
   ])
+
+  const heroTitle = s?.shopPageTitle || 'Thiết kế'
+  const heroSub = s?.shopPageSubtitle || 'Độc bản'
+  const intro = s?.shopPageIntro || 'Tại Akina Florist, mỗi thiết kế hoa là một tác phẩm mang dấu ấn riêng, được tạo nên từ những nguyên liệu tươi mới, kết hợp giữa kỹ thuật điêu luyện và tư duy duy mỹ tinh tế.'
 
   return (
     <>
-      <PreHeader />
+      <PreHeader s={s} />
       <Header />
       <main>
-        {/* Page hero */}
         <div className={styles.hero}>
           <div className={styles.heroBg} />
           <div className={styles.heroContent}>
-            <h1 className="display-4" style={{ color: '#fff' }}>Thiết kế</h1>
-            <div className={styles.heroSub}>Độc bản</div>
+            <h1 className="display-4" style={{ color: '#fff' }}>{heroTitle}</h1>
+            <div className={styles.heroSub}>{heroSub}</div>
           </div>
         </div>
-
-        {/* Intro */}
         <section className={styles.intro}>
-          <div className="container">
-            <p>Tại Akina Florist, mỗi thiết kế hoa là một tác phẩm mang dấu ấn riêng, được tạo nên từ những nguyên liệu tươi mới, kết hợp giữa kỹ thuật điêu luyện và tư duy duy mỹ tinh tế.</p>
-          </div>
+          <div className="container"><p>{intro}</p></div>
         </section>
-
-        {/* Categories */}
         <section className={styles.categories}>
           <div className="container">
             <div className={styles.catGrid}>
@@ -55,8 +54,6 @@ export default async function SanPhamPage() {
             </div>
           </div>
         </section>
-
-        {/* Best sellers */}
         {bestSellers && bestSellers.length > 0 && (
           <section className={styles.products}>
             <div className="container">
@@ -71,7 +68,7 @@ export default async function SanPhamPage() {
           </section>
         )}
       </main>
-      <Footer />
+      <Footer s={s} />
     </>
   )
 }

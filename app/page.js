@@ -7,46 +7,38 @@ import StorySection from '@/components/StorySection'
 import WhySection from '@/components/WhySection'
 import BrandsSection from '@/components/BrandsSection'
 import GallerySection from '@/components/GallerySection'
-import { getBanners, getCategories, getWhySection, getBrands, getGallery } from '@/lib/queries'
+import { getBanners, getCategories, getWhySection, getBrands, getGallery, getSiteSettings } from '@/lib/queries'
 
-// ISR: trang chủ được revalidate mỗi 60 giây
 export const revalidate = 60
 
 export default async function Home() {
-  const [banners, categories, whyItems, brands, gallery] = await Promise.all([
-    getBanners(),
-    getCategories(),
-    getWhySection(),
-    getBrands(),
-    getGallery(),
+  const [banners, categories, whyItems, brands, gallery, s] = await Promise.all([
+    getBanners(), getCategories(), getWhySection(), getBrands(), getGallery(), getSiteSettings(),
   ])
+
+  const videoSrc = s?.homeVideo?.videoFile || s?.homeVideo?.videoUrl || '/images/home/video-akinaflorist.mp4'
+  const posterSrc = s?.homeVideo?.posterImage || undefined
 
   return (
     <>
-      <PreHeader />
+      <PreHeader s={s} />
       <Header />
       <main>
-        <h1 className="sr-only">Câu chuyện của hoa & lá - Akina Florist</h1>
+        <h1 className="sr-only">{s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist'}</h1>
         <HeroBanner banners={banners || []} />
         <CategorySlider categories={categories || []} />
         <section style={{ maxHeight: 'calc(100vh - 72px)', overflow: 'hidden', background: '#111', aspectRatio: '16/9' }}>
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          >
-            <source src="/images/home/video-akinaflorist.mp4" type="video/mp4" />
+          <video autoPlay muted loop playsInline preload="metadata" poster={posterSrc}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+            <source src={videoSrc} type="video/mp4" />
           </video>
         </section>
-        <StorySection />
-        <WhySection items={whyItems || []} />
+        <StorySection s={s} />
+        <WhySection items={whyItems || []} s={s} />
         <BrandsSection brands={brands || []} />
         <GallerySection gallery={gallery || []} />
       </main>
-      <Footer />
+      <Footer s={s} />
     </>
   )
 }
