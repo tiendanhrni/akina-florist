@@ -2,7 +2,8 @@ import './globals.css'
 import { draftMode } from 'next/headers'
 import FloatButtons from '@/components/FloatButtons'
 import VisualEditingComponent from '@/components/VisualEditing'
-import { getSiteSettings } from '@/lib/queries'
+import Header from '@/components/Header'
+import { getSiteSettings, getNavPages } from '@/lib/queries'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
 
@@ -10,9 +11,12 @@ export async function generateMetadata() {
   const s = await getSiteSettings()
   return {
     metadataBase: new URL(SITE_URL),
-    title: { default: s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist', template: `%s - ${s?.siteName || 'Akina Florist'}` },
+    title: {
+      default: s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist',
+      template: `%s - ${s?.siteName || 'Akina Florist'}`,
+    },
     description: s?.seoDescription || 'Akina được lấy cảm hứng từ hoa. Mỗi bó hoa tại Akina Florist là một tác phẩm nghệ thuật độc đáo.',
-    keywords: s?.seoKeywords || 'hoa, đặt hoa, hoa tươi, hoa nhập khẩu, akina florist',
+    keywords: s?.seoKeywords || 'hoa, đặt hoa, hoa tươi, akina florist',
     verification: s?.googleVerification ? { google: s.googleVerification } : undefined,
     openGraph: {
       title: s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist',
@@ -25,9 +29,10 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  const [{ isEnabled: isDraftMode }, s] = await Promise.all([
+  const [{ isEnabled: isDraftMode }, s, navPages] = await Promise.all([
     draftMode(),
     getSiteSettings(),
+    getNavPages(),
   ])
 
   return (
