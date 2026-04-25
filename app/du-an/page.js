@@ -5,6 +5,8 @@ import { getSanityData } from '@/lib/sanity'
 import Image from 'next/image'
 import styles from './page.module.css'
 
+export const revalidate = 60
+
 export const metadata = {
   title: 'Dự án - Akina Florist',
   description: 'Khám phá các dự án trang trí hoa sự kiện của Akina Florist.',

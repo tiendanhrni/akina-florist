@@ -5,6 +5,8 @@ import ProductCard from '@/components/ProductCard'
 import { getCategories, getBestSellers } from '@/lib/queries'
 import styles from './page.module.css'
 
+export const revalidate = 60
+
 export const metadata = {
   title: 'Đặt hoa - Akina Florist',
   description: 'Khám phá các thiết kế hoa độc đáo tại Akina Florist. Hoa bó, giỏ hoa, crystal box và nhiều hơn nữa.',

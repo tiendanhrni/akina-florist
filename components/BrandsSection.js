@@ -11,10 +11,13 @@ export default function BrandsSection({ brands }) {
         {brands.length > 0 ? brands.map(b => (
           <div key={b._id} className={styles.item}>
             {b.logo ? (
-              <Image src={b.logo} alt={b.name} width={120} height={50}
-                style={{ objectFit: 'contain', filter: 'grayscale(1)', transition: 'filter 0.3s' }}
-                onMouseEnter={e => e.target.style.filter = 'grayscale(0)'}
-                onMouseLeave={e => e.target.style.filter = 'grayscale(1)'} />
+              <Image
+                src={b.logo}
+                alt={b.name}
+                width={120}
+                height={50}
+                className={styles.logo}
+              />
             ) : (
               <span>{b.name}</span>
             )}

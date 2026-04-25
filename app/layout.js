@@ -1,7 +1,10 @@
 import './globals.css'
 import FloatButtons from '@/components/FloatButtons'
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
+
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Câu chuyện của hoa & lá - Akina Florist',
   description: 'Akina được lấy cảm hứng từ hoa. Mỗi bó hoa tại Akina Florist là một tác phẩm nghệ thuật độc đáo, mang đến những câu chuyện và cảm xúc riêng biệt.',
   keywords: 'hoa, đặt hoa, hoa tươi, hoa nhập khẩu, akina florist',

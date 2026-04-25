@@ -1,14 +1,18 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
-import { mediaPlugin } from 'sanity-plugin-media'
+import { media, mediaAssetSource } from 'sanity-plugin-media'
 import { schemaTypes } from './sanity/schemas/all'
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'q3i5b990'
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 
 export default defineConfig({
   name: 'akina-florist',
   title: 'Akina Florist Admin',
-  projectId: 'q3i5b990',
-  dataset: 'production',
+  basePath: '/studio',
+  projectId,
+  dataset,
   plugins: [
     structureTool({
       structure: (S) =>
@@ -45,9 +49,21 @@ export default defineConfig({
           ])
     }),
     visionTool(),
-    mediaPlugin(),
+    media(),
   ],
   schema: {
     types: schemaTypes,
+  },
+  form: {
+    file: {
+      assetSources: (previousAssetSources) => {
+        return previousAssetSources.filter((assetSource) => assetSource !== mediaAssetSource)
+      },
+    },
+    image: {
+      assetSources: (previousAssetSources) => {
+        return previousAssetSources.filter((assetSource) => assetSource !== mediaAssetSource)
+      },
+    },
   },
 })

@@ -5,6 +5,11 @@ import ProductCard from '@/components/ProductCard'
 import { getProductsByCategory, getCategories } from '@/lib/queries'
 import styles from './page.module.css'
 
+// Cho phép path động chưa pre-render
+export const dynamicParams = true
+// Revalidate ISR mỗi 60s để CMS update hiện sớm
+export const revalidate = 60
+
 export async function generateStaticParams() {
   const categories = await getCategories()
   return (categories || []).map(cat => ({
@@ -13,8 +18,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  const { category } = await params
   const categories = await getCategories()
-  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === params.category)
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
   return {
     title: `${cat?.title || 'Sản phẩm'} - Akina Florist`,
     description: cat?.description || 'Khám phá các thiết kế hoa độc đáo tại Akina Florist.',
@@ -22,12 +28,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CategoryPage({ params }) {
+  const { category } = await params
   const [products, categories] = await Promise.all([
-    getProductsByCategory(params.category),
+    getProductsByCategory(category),
     getCategories(),
   ])
 
-  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === params.category)
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
 
   return (
     <>
@@ -49,7 +56,7 @@ export default async function CategoryPage({ params }) {
               {(categories || []).map(c => (
                 <a key={c._id}
                   href={`/san-pham/${c.slug?.current || c.slug}`}
-                  className={`${styles.catTab} ${(c.slug?.current || c.slug) === params.category ? styles.active : ''}`}>
+                  className={`${styles.catTab} ${(c.slug?.current || c.slug) === category ? styles.active : ''}`}>
                   {c.title}
                 </a>
               ))}

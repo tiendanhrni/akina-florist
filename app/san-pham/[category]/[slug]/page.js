@@ -6,18 +6,26 @@ import ProductGallery from '@/components/ProductGallery'
 import { getProduct, getRelatedProducts } from '@/lib/queries'
 import styles from './page.module.css'
 
+// Sản phẩm có thể được thêm bất cứ lúc nào → render on-demand & ISR
+export const dynamicParams = true
+export const revalidate = 60
+
 export async function generateMetadata({ params }) {
-  const product = await getProduct(params.category, params.slug)
+  const { category, slug } = await params
+  const product = await getProduct(category, slug)
   return {
     title: `${product?.name || 'Sản phẩm'} - Akina Florist`,
-    description: product?.name ? `${product.name} tại Akina Florist. Giao hàng nhanh trong 2 giờ nội thành HCM.` : '',
+    description: product?.name
+      ? `${product.name} tại Akina Florist. Giao hàng nhanh trong 2 giờ nội thành HCM.`
+      : 'Sản phẩm Akina Florist',
   }
 }
 
 export default async function ProductDetailPage({ params }) {
+  const { category, slug } = await params
   const [product, related] = await Promise.all([
-    getProduct(params.category, params.slug),
-    getRelatedProducts(params.category, params.slug),
+    getProduct(category, slug),
+    getRelatedProducts(category, slug),
   ])
 
   if (!product) {
@@ -54,7 +62,7 @@ export default async function ProductDetailPage({ params }) {
             <div className={styles.breadcrumb}>
               <a href="/san-pham">Đặt hoa</a>
               <span>/</span>
-              <a href={`/san-pham/${params.category}`}>{product.category?.title}</a>
+              <a href={`/san-pham/${category}`}>{product.category?.title}</a>
               <span>/</span>
               <span>{product.name}</span>
             </div>

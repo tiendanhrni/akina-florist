@@ -9,6 +9,9 @@ import BrandsSection from '@/components/BrandsSection'
 import GallerySection from '@/components/GallerySection'
 import { getBanners, getCategories, getWhySection, getBrands, getGallery } from '@/lib/queries'
 
+// ISR: trang chủ được revalidate mỗi 60 giây
+export const revalidate = 60
+
 export default async function Home() {
   const [banners, categories, whyItems, brands, gallery] = await Promise.all([
     getBanners(),
@@ -27,7 +30,14 @@ export default async function Home() {
         <HeroBanner banners={banners || []} />
         <CategorySlider categories={categories || []} />
         <section style={{ maxHeight: 'calc(100vh - 72px)', overflow: 'hidden', background: '#111', aspectRatio: '16/9' }}>
-          <video autoPlay muted loop playsInline preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          >
             <source src="/images/home/video-akinaflorist.mp4" type="video/mp4" />
           </video>
         </section>
