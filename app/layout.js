@@ -39,7 +39,7 @@ export default async function RootLayout({ children }) {
     <html lang="vi">
       <body>
         {children}
-        <FloatButtons s={s} />
+        <FloatButtons data={s} />
         {isDraftMode && <VisualEditingComponent />}
       </body>
     </html>
