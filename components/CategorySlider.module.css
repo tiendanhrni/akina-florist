@@ -26,7 +26,7 @@
   aspect-ratio: 4/6;
   overflow: hidden;
 }
-.card:hover .img img { transform: scale(1.04); }
+.card:hover .img img { transform: scale(1.14); }
 
 .img {
   position: absolute;
