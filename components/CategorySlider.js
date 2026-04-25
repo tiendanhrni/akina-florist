@@ -19,7 +19,6 @@ export default function CategorySlider({ categories }) {
   const trackRef = useRef(null)
   const dragRef = useRef({ isDragging: false, startX: 0, scrollLeft: 0, moved: false })
   const [dragging, setDragging] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
 
   const base = categories.length > 0 ? categories : defaultCategories
   const items = [...base, ...base, ...base]
@@ -41,7 +40,6 @@ export default function CategorySlider({ categories }) {
     if (!track) return
     const cardW = getCardWidth()
     track.scrollBy({ left: dir * cardW, behavior: 'smooth' })
-    setCurrentIndex(i => i + dir)
     setTimeout(() => {
       const third = track.scrollWidth / 3
       if (track.scrollLeft < cardW) track.scrollLeft += third
@@ -49,7 +47,6 @@ export default function CategorySlider({ categories }) {
     }, 350)
   }
 
-  // Mouse drag
   const onMouseDown = (e) => {
     dragRef.current = {
       isDragging: true,
@@ -72,7 +69,6 @@ export default function CategorySlider({ categories }) {
     setDragging(false)
   }
 
-  // Touch drag
   const onTouchStart = (e) => {
     dragRef.current = {
       isDragging: true,
