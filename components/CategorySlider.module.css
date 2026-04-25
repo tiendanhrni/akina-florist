@@ -1,10 +1,10 @@
-.section { 
-  position: relative; 
-  width: 100vw; 
-  overflow: hidden; 
+.section {
+  position: relative;
+  width: 100vw;
+  overflow: hidden;
   padding-left: 2.5rem;
-  padding-top: 3rem;     /* khoảng trắng phía trên */
-  padding-bottom: 3rem;  /* khoảng trắng phía dưới */
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .track {
@@ -14,6 +14,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   gap: 8px;
+  user-select: none;
 }
 .track::-webkit-scrollbar { display: none; }
 
@@ -26,7 +27,6 @@
   aspect-ratio: 4/6;
   overflow: hidden;
 }
-.card:hover .img img { transform: scale(1.14); }
 
 .img {
   position: absolute;
@@ -34,9 +34,11 @@
   overflow: hidden;
   background: #e8ddd5;
 }
-.img img { transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+.img img {
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.card:hover .img img { transform: scale(1.06); }
 
-/* Label giống Ren — slide from left */
 .labelWrap {
   position: absolute;
   bottom: 1.5rem;
@@ -53,21 +55,17 @@
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.2);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   background: rgba(0,0,0,0.2);
   color: #fff;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.05em;
   text-align: center;
-  transition: color 0.5s;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  transition: color 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 
-/* Nền trắng slide từ trái */
-.label::before {
-  content: '';
+.labelBg {
   position: absolute;
   inset: 0;
   background: #fff;
@@ -75,15 +73,18 @@
   transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
   z-index: 0;
 }
-.card:hover .label::before { transform: translateX(0); }
+.card:hover .labelBg { transform: translateX(0); }
 .card:hover .label { color: #1a1a1a; }
 
 .labelText {
   position: relative;
   z-index: 1;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Nút mũi tên */
 .arrow {
   position: absolute;
   top: 50%;
@@ -93,25 +94,25 @@
   border-radius: 50%;
   background: rgba(255,255,255,0.57);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0,0,0,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.3s;
+  transition: background 0.3s;
 }
 .arrow:hover { background: #fff; }
 .arrowLeft { left: 1rem; }
 .arrowRight { right: 1rem; }
+.arrowIcon { width: 12px; height: 20px; flex-shrink: 0; }
 
-.arrowIcon { width: 12px; height: 20px; }
-
-@media (max-width: 1280px) { .card { flex: 0 0 360px; max-width: 360px; } }
+@media (max-width: 1280px) {
+  .card { flex: 0 0 360px; max-width: 360px; }
+}
 @media (max-width: 768px) {
-  .section { padding-left: 1.5rem; }
+  .section { padding-left: 1.5rem; padding-top: 2rem; padding-bottom: 2rem; }
   .card { flex: 0 0 70vw; max-width: 70vw; }
   .arrow { display: none; }
 }
-.dragging { cursor: grabbing !important; user-select: none; }
-.track { cursor: grab; }
