@@ -17,89 +17,95 @@ const bgs = ['#c8b8a8','#b8c8b8','#c0b0c0','#c8c0b0','#b0c0c0','#c0b0b8']
 
 export default function CategorySlider({ categories }) {
   const trackRef = useRef(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollLeft, setScrollLeft] = useState(0)
+  const dragRef = useRef({ isDragging: false, startX: 0, scrollLeft: 0, moved: false })
+  const [dragging, setDragging] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const base = categories.length > 0 ? categories : defaultCategories
-  // Nhân 3 lần để tạo vòng lặp giả
   const items = [...base, ...base, ...base]
   const total = base.length
 
-  // Set vị trí ban đầu ở giữa (bộ thứ 2)
   useEffect(() => {
     if (trackRef.current) {
-      const cardWidth = trackRef.current.scrollWidth / 3
-      trackRef.current.scrollLeft = cardWidth
+      trackRef.current.scrollLeft = trackRef.current.scrollWidth / 3
     }
   }, [])
 
   const getCardWidth = () => {
     if (!trackRef.current) return 440
-    return trackRef.current.querySelector('a')?.offsetWidth + 8 || 440
+    return (trackRef.current.querySelector('a')?.offsetWidth || 432) + 8
   }
 
   const scroll = (dir) => {
     const track = trackRef.current
     if (!track) return
     const cardW = getCardWidth()
-    const next = currentIndex + dir
-
     track.scrollBy({ left: dir * cardW, behavior: 'smooth' })
-    setCurrentIndex(next)
-
-    // Reset về giữa khi đến đầu/cuối
+    setCurrentIndex(i => i + dir)
     setTimeout(() => {
-      const maxScroll = track.scrollWidth / 3
-      if (track.scrollLeft < cardW) {
-        track.scrollLeft += maxScroll
-      } else if (track.scrollLeft > maxScroll * 2 - cardW) {
-        track.scrollLeft -= maxScroll
-      }
+      const third = track.scrollWidth / 3
+      if (track.scrollLeft < cardW) track.scrollLeft += third
+      else if (track.scrollLeft > third * 2 - cardW) track.scrollLeft -= third
     }, 350)
   }
 
-  // Drag to scroll
+  // Mouse drag
   const onMouseDown = (e) => {
-    setIsDragging(true)
-    setStartX(e.pageX - trackRef.current.offsetLeft)
-    setScrollLeft(trackRef.current.scrollLeft)
+    dragRef.current = {
+      isDragging: true,
+      startX: e.pageX,
+      scrollLeft: trackRef.current.scrollLeft,
+      moved: false,
+    }
+    setDragging(true)
   }
 
   const onMouseMove = (e) => {
-    if (!isDragging) return
-    e.preventDefault()
-    const x = e.pageX - trackRef.current.offsetLeft
-    const walk = (x - startX) * 1.5
-    trackRef.current.scrollLeft = scrollLeft - walk
+    if (!dragRef.current.isDragging) return
+    const walk = (e.pageX - dragRef.current.startX) * 1.2
+    if (Math.abs(walk) > 5) dragRef.current.moved = true
+    trackRef.current.scrollLeft = dragRef.current.scrollLeft - walk
   }
 
-  const onMouseUp = () => setIsDragging(false)
+  const onMouseUp = () => {
+    dragRef.current.isDragging = false
+    setDragging(false)
+  }
 
-  // Touch support
+  // Touch drag
   const onTouchStart = (e) => {
-    setStartX(e.touches[0].pageX - trackRef.current.offsetLeft)
-    setScrollLeft(trackRef.current.scrollLeft)
+    dragRef.current = {
+      isDragging: true,
+      startX: e.touches[0].pageX,
+      scrollLeft: trackRef.current.scrollLeft,
+      moved: false,
+    }
   }
 
   const onTouchMove = (e) => {
-    const x = e.touches[0].pageX - trackRef.current.offsetLeft
-    const walk = (x - startX) * 1.2
-    trackRef.current.scrollLeft = scrollLeft - walk
+    if (!dragRef.current.isDragging) return
+    const walk = (e.touches[0].pageX - dragRef.current.startX) * 1.2
+    dragRef.current.moved = true
+    trackRef.current.scrollLeft = dragRef.current.scrollLeft - walk
+  }
+
+  const onTouchEnd = () => {
+    dragRef.current.isDragging = false
   }
 
   return (
     <section className={styles.section}>
       <div
-        className={`${styles.track} ${isDragging ? styles.dragging : ''}`}
         ref={trackRef}
+        className={styles.track}
+        style={{ cursor: dragging ? 'grabbing' : 'grab' }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseUp}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       >
         {items.map((cat, i) => (
           <Link
@@ -107,7 +113,7 @@ export default function CategorySlider({ categories }) {
             href={`/san-pham/${cat.slug?.current || cat.slug}`}
             className={styles.card}
             draggable={false}
-            onClick={(e) => isDragging && e.preventDefault()}
+            onClick={(e) => { if (dragRef.current.moved) e.preventDefault() }}
           >
             <div className={styles.img}>
               {cat.image
@@ -126,15 +132,12 @@ export default function CategorySlider({ categories }) {
         ))}
       </div>
 
-      <button className={`${styles.arrow} ${styles.arrowLeft}`}
-        onClick={() => scroll(-1)} aria-label="Trước">
+      <button className={`${styles.arrow} ${styles.arrowLeft}`} onClick={() => scroll(-1)} aria-label="Trước">
         <svg className={styles.arrowIcon} viewBox="0 0 12 20" fill="none">
           <path d="M9 17.12L1.5 9.62L9 2.12" stroke="black" strokeWidth="3" strokeLinecap="square" strokeLinejoin="round"/>
         </svg>
       </button>
-
-      <button className={`${styles.arrow} ${styles.arrowRight}`}
-        onClick={() => scroll(1)} aria-label="Sau">
+      <button className={`${styles.arrow} ${styles.arrowRight}`} onClick={() => scroll(1)} aria-label="Sau">
         <svg className={styles.arrowIcon} viewBox="0 0 12 20" fill="none" style={{ transform: 'rotate(180deg)' }}>
           <path d="M9 17.12L1.5 9.62L9 2.12" stroke="black" strokeWidth="3" strokeLinecap="square" strokeLinejoin="round"/>
         </svg>
