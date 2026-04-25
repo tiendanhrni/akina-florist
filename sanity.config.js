@@ -9,7 +9,6 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'q3i5b990'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 const previewSecret = process.env.SANITY_PREVIEW_SECRET || 'akina-preview-2025'
 
-// URL website để preview (production hoặc local)
 const previewUrl =
   typeof window !== 'undefined'
     ? window.location.hostname === 'localhost'
@@ -25,7 +24,6 @@ export default defineConfig({
   dataset,
 
   plugins: [
-    // 🖥️ Presentation Tool — Visual Editing chính
     presentationTool({
       previewUrl: {
         origin: previewUrl,
@@ -41,15 +39,36 @@ export default defineConfig({
         S.list()
           .title('Quản trị nội dung')
           .items([
+            // ─── CÀI ĐẶT CHUNG (singleton) ───
+            S.listItem()
+              .title('⚙️ Cài đặt website')
+              .child(
+                S.document()
+                  .schemaType('siteSettings')
+                  .documentId('siteSettings')
+                  .title('Cài đặt website')
+              ),
+
+            S.divider(),
+
+            // ─── TRANG CHỦ ───
             S.listItem()
               .title('🖼️ Banner trang chủ')
               .child(S.documentTypeList('banner').title('Banner')),
+
+            S.divider(),
+
+            // ─── SẢN PHẨM ───
             S.listItem()
               .title('📂 Danh mục sản phẩm')
               .child(S.documentTypeList('category').title('Danh mục')),
             S.listItem()
               .title('🌸 Sản phẩm')
               .child(S.documentTypeList('product').title('Sản phẩm')),
+
+            S.divider(),
+
+            // ─── NỘI DUNG TRANG CHỦ ───
             S.listItem()
               .title('⭐ Vì sao được yêu thích')
               .child(S.documentTypeList('whySection').title('Vì sao yêu thích')),
@@ -59,6 +78,10 @@ export default defineConfig({
             S.listItem()
               .title('📸 Gallery Instagram')
               .child(S.documentTypeList('gallery').title('Gallery')),
+
+            S.divider(),
+
+            // ─── CÁC TRANG KHÁC ───
             S.listItem()
               .title('👤 Trang giới thiệu')
               .child(S.documentTypeList('aboutPage').title('Giới thiệu')),
@@ -75,14 +98,11 @@ export default defineConfig({
     media(),
   ],
 
-  schema: {
-    types: schemaTypes,
-  },
+  schema: { types: schemaTypes },
 
   form: {
     image: {
-      assetSources: (previousAssetSources) =>
-        previousAssetSources.filter((s) => s !== mediaAssetSource),
+      assetSources: (prev) => prev.filter((s) => s !== mediaAssetSource),
     },
   },
 })
