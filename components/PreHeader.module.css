@@ -1,0 +1,19 @@
+.wrap {
+  background: #577057;
+  height: 41px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #ffffeb;
+  text-transform: uppercase;
+}
+.wrap a {
+  color: #ffffeb;
+  text-decoration: underline;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.wrap a:hover { opacity: 1; }

@@ -1,0 +1,22 @@
+.hero { position: relative; height: 55vh; display: flex; align-items: flex-end; overflow: hidden; }
+.heroBg { position: absolute; inset: 0; background: linear-gradient(135deg,#b8c8b8,#7a8a7a); }
+.heroOverlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
+.heroContent { position: relative; z-index: 2; padding: 0 2rem 3rem; }
+.intro { padding: 3rem 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); }
+.intro p { max-width: 600px; font-size: 15px; line-height: 2; color: #555; font-weight: 300; }
+.workshops { padding: 4rem 0 6rem; }
+.grid { display: flex; flex-direction: column; gap: 6rem; }
+.card { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.card:nth-child(even) .cardImg { order: 2; }
+.card:nth-child(even) .cardInfo { order: 1; }
+.cardImg { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+.cardImg:hover img { transform: scale(1.04); }
+.cardInfo {}
+.cardTitle { font-family: 'Cormorant Garamond',serif; font-size: 2rem; font-weight: 300; margin: 0.75rem 0 1.5rem; }
+.meta { display: flex; flex-direction: column; gap: 0.5rem; }
+.meta div { font-size: 13px; color: rgba(0,0,0,0.6); }
+.meta span { font-weight: 500; color: #1a1a1a; }
+.empty { text-align: center; padding: 6rem 0; }
+.empty h2 { margin-bottom: 1rem; }
+.empty p { font-size: 15px; color: rgba(0,0,0,0.5); }
+@media (max-width: 768px) { .card { grid-template-columns: 1fr; } .card:nth-child(even) .cardImg { order: 0; } .card:nth-child(even) .cardInfo { order: 0; } }
