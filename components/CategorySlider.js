@@ -48,18 +48,19 @@ export default function CategorySlider({ categories }) {
   }
 
   const onMouseDown = (e) => {
-    dragRef.current = {
-      isDragging: true,
-      startX: e.pageX,
-      scrollLeft: trackRef.current.scrollLeft,
-      moved: false,
-    }
-    setDragging(true)
+  e.preventDefault()
+  dragRef.current = {
+    isDragging: true,
+    startX: e.pageX,
+    scrollLeft: trackRef.current.scrollLeft,
+    moved: false,
   }
+  setDragging(true)
+}
 
   const onMouseMove = (e) => {
     if (!dragRef.current.isDragging) return
-    const walk = (e.pageX - dragRef.current.startX) * 1.2
+    const walk = (e.pageX - dragRef.current.startX) * 1
     if (Math.abs(walk) > 5) dragRef.current.moved = true
     trackRef.current.scrollLeft = dragRef.current.scrollLeft - walk
   }
