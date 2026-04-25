@@ -113,3 +113,5 @@
   .card { flex: 0 0 70vw; max-width: 70vw; }
   .arrow { display: none; }
 }
+.dragging { cursor: grabbing !important; user-select: none; }
+.track { cursor: grab; }
