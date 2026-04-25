@@ -3,123 +3,117 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 import ProductGallery from '@/components/ProductGallery'
-import { getProduct, getRelatedProducts } from '@/lib/queries'
+import { getProduct, getRelatedProducts, getSiteSettings, getNavPages } from '@/lib/queries'
 import styles from './page.module.css'
 
-// Sản phẩm có thể được thêm bất cứ lúc nào → render on-demand & ISR
 export const dynamicParams = true
 export const revalidate = 60
 
 export async function generateMetadata({ params }) {
   const { category, slug } = await params
-  const product = await getProduct(category, slug)
+  const [product, s] = await Promise.all([getProduct(category, slug), getSiteSettings()])
+  const siteName = s?.siteName || 'Akina Florist'
   return {
-    title: `${product?.name || 'Sản phẩm'} - Akina Florist`,
+    title: `${product?.name || 'Sản phẩm'} - ${siteName}`,
     description: product?.name
-      ? `${product.name} tại Akina Florist. Giao hàng nhanh trong 2 giờ nội thành HCM.`
-      : 'Sản phẩm Akina Florist',
+      ? `${product.name} tại ${siteName}. ${s?.seoDescription || ''}`
+      : s?.seoDescription || '',
   }
 }
 
 export default async function ProductDetailPage({ params }) {
   const { category, slug } = await params
-  const [product, related] = await Promise.all([
+  const [product, related, s, navPages] = await Promise.all([
     getProduct(category, slug),
     getRelatedProducts(category, slug),
+    getSiteSettings(),
+    getNavPages(),
   ])
+
+  const p = s?.productPage || {}
+  const hotline = s?.hotline || '0933 486 388'
+  const hotlineClean = hotline.replace(/\s/g, '')
+  const messengerUrl = s?.messengerUrl || 'https://m.me/akinaflorist'
 
   if (!product) {
     return (
       <>
-        <PreHeader />
-        <Header />
+        <PreHeader s={s} /><Header s={s} navPages={navPages} />
         <main style={{ padding: '8rem 2rem', textAlign: 'center' }}>
-          <h1>Không tìm thấy sản phẩm</h1>
-          <a href="/san-pham" className="btn-outline" style={{ marginTop: '2rem', display: 'inline-block' }}>Quay lại</a>
+          <h1>{p.notFoundText || 'Không tìm thấy sản phẩm'}</h1>
+          <a href="/san-pham" className="btn-outline" style={{ marginTop: '2rem', display: 'inline-block' }}>
+            {p.backToShop || 'Quay lại'}
+          </a>
         </main>
-        <Footer />
+        <Footer s={s} />
       </>
     )
   }
 
   const price = product.price
     ? new Intl.NumberFormat('vi-VN').format(product.price) + ' VND'
-    : (product.priceNote || 'Liên hệ')
+    : (product.priceNote || p.priceLabel || 'Liên hệ')
 
   return (
     <>
-      <PreHeader />
-      <Header />
+      <PreHeader s={s} />
+      <Header s={s} navPages={navPages} />
       <main>
         <div className={styles.layout}>
-          {/* Gallery */}
           <div className={styles.gallery}>
             <ProductGallery images={product.images || []} name={product.name} />
           </div>
-
-          {/* Info */}
           <div className={styles.info}>
             <div className={styles.breadcrumb}>
-              <a href="/san-pham">Đặt hoa</a>
+              <a href="/san-pham">{s?.navLabels?.shop || 'Đặt hoa'}</a>
               <span>/</span>
               <a href={`/san-pham/${category}`}>{product.category?.title}</a>
               <span>/</span>
               <span>{product.name}</span>
             </div>
-
             <div className={styles.code}>{product.code}</div>
             <h1 className={styles.name}>{product.name}</h1>
             <div className={styles.price}>{price}</div>
-
-            {/* Tags */}
-            {product.tags && product.tags.length > 0 && (
+            {product.tags?.length > 0 && (
               <div className={styles.tags}>
-                {product.tags.map(tag => (
-                  <span key={tag} className={styles.tag}>{tag}</span>
-                ))}
+                {product.tags.map(tag => <span key={tag} className={styles.tag}>{tag}</span>)}
               </div>
             )}
-
-            {/* CTA */}
             <div className={styles.cta}>
-              <a href="tel:0933486388" className="btn-green" style={{ display: 'block', textAlign: 'center', marginBottom: '0.75rem' }}>
-                Đặt hàng ngay — 0933 486 388
+              <a href={`tel:${hotlineClean}`} className="btn-green" style={{ display: 'block', textAlign: 'center', marginBottom: '0.75rem' }}>
+                {p.orderBtnText || 'Đặt hàng ngay'} — {hotline}
               </a>
-              <a href="https://m.me/akinaflorist" target="_blank" rel="noopener noreferrer"
+              <a href={messengerUrl} target="_blank" rel="noopener noreferrer"
                 className="btn-outline" style={{ display: 'block', textAlign: 'center' }}>
-                Nhắn tin tư vấn
+                {p.consultBtnText || 'Nhắn tin tư vấn'}
               </a>
             </div>
-
-            {/* Accordion */}
             {product.shipmentInfo && (
               <div className={styles.accordion}>
-                <div className={styles.accTitle}>Thông tin giao hàng</div>
+                <div className={styles.accTitle}>{p.shipmentLabel || 'Thông tin giao hàng'}</div>
                 <p className={styles.accContent}>{product.shipmentInfo}</p>
               </div>
             )}
             {product.usage && (
               <div className={styles.accordion}>
-                <div className={styles.accTitle}>Cách sử dụng hoa nhà Akina</div>
+                <div className={styles.accTitle}>{p.usageLabel || 'Cách sử dụng hoa'}</div>
                 <p className={styles.accContent}>{product.usage}</p>
               </div>
             )}
             {product.note && (
               <div className={styles.accordion}>
-                <div className={styles.accTitle}>Lưu ý</div>
+                <div className={styles.accTitle}>{p.noteLabel || 'Lưu ý'}</div>
                 <p className={styles.accContent}>{product.note}</p>
               </div>
             )}
           </div>
         </div>
-
-        {/* Related */}
-        {related && related.length > 0 && (
+        {related?.length > 0 && (
           <section className={styles.related}>
             <div className="container">
               <div className={styles.relatedHead}>
-                <div className="title-2" style={{ opacity: 0.45 }}>Những thiết kế</div>
-                <h2 className="display-3">bạn sẽ thích</h2>
+                <div className="title-2" style={{ opacity: 0.45 }}>{p.relatedSubtitle || 'Những thiết kế'}</div>
+                <h2 className="display-3">{p.relatedTitle || 'bạn sẽ thích'}</h2>
               </div>
               <div className={styles.relatedGrid}>
                 {related.map(p => <ProductCard key={p._id} product={p} />)}
@@ -128,7 +122,7 @@ export default async function ProductDetailPage({ params }) {
           </section>
         )}
       </main>
-      <Footer />
+      <Footer s={s} />
     </>
   )
 }

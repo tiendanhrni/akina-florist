@@ -2,44 +2,42 @@ import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
-import { getProductsByCategory, getCategories } from '@/lib/queries'
+import { getProductsByCategory, getCategories, getSiteSettings, getNavPages } from '@/lib/queries'
 import styles from './page.module.css'
 
-// Cho phép path động chưa pre-render
 export const dynamicParams = true
-// Revalidate ISR mỗi 60s để CMS update hiện sớm
 export const revalidate = 60
 
 export async function generateStaticParams() {
   const categories = await getCategories()
-  return (categories || []).map(cat => ({
-    category: cat.slug?.current || cat.slug
-  }))
+  return (categories || []).map(cat => ({ category: cat.slug?.current || cat.slug }))
 }
 
 export async function generateMetadata({ params }) {
   const { category } = await params
-  const categories = await getCategories()
+  const [categories, s] = await Promise.all([getCategories(), getSiteSettings()])
   const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
   return {
-    title: `${cat?.title || 'Sản phẩm'} - Akina Florist`,
-    description: cat?.description || 'Khám phá các thiết kế hoa độc đáo tại Akina Florist.',
+    title: `${cat?.title || 'Sản phẩm'} - ${s?.siteName || 'Akina Florist'}`,
+    description: cat?.description || s?.seoDescription || '',
   }
 }
 
 export default async function CategoryPage({ params }) {
   const { category } = await params
-  const [products, categories] = await Promise.all([
+  const [products, categories, s, navPages] = await Promise.all([
     getProductsByCategory(category),
     getCategories(),
+    getSiteSettings(),
+    getNavPages(),
   ])
-
   const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
+  const cp = s?.categoryPage || {}
 
   return (
     <>
-      <PreHeader />
-      <Header />
+      <PreHeader s={s} />
+      <Header s={s} navPages={navPages} />
       <main>
         <div className={styles.hero}>
           <div className={styles.overlay} />
@@ -48,14 +46,11 @@ export default async function CategoryPage({ params }) {
             {cat?.description && <p className={styles.desc}>{cat.description}</p>}
           </div>
         </div>
-
-        {/* Category nav */}
         <nav className={styles.catNav}>
           <div className="container">
             <div className={styles.catNavInner}>
               {(categories || []).map(c => (
-                <a key={c._id}
-                  href={`/san-pham/${c.slug?.current || c.slug}`}
+                <a key={c._id} href={`/san-pham/${c.slug?.current || c.slug}`}
                   className={`${styles.catTab} ${(c.slug?.current || c.slug) === category ? styles.active : ''}`}>
                   {c.title}
                 </a>
@@ -63,24 +58,22 @@ export default async function CategoryPage({ params }) {
             </div>
           </div>
         </nav>
-
-        {/* Products grid */}
         <section className={styles.section}>
           <div className="container">
-            {products && products.length > 0 ? (
+            {products?.length > 0 ? (
               <div className={styles.grid}>
                 {products.map(p => <ProductCard key={p._id} product={p} />)}
               </div>
             ) : (
               <div className={styles.empty}>
-                <p>Chưa có sản phẩm trong danh mục này.</p>
-                <p>Vui lòng quay lại sau hoặc khám phá các danh mục khác.</p>
+                <p>{cp.emptyText || 'Chưa có sản phẩm trong danh mục này.'}</p>
+                <p>{cp.emptySubtext || 'Vui lòng quay lại sau hoặc khám phá các danh mục khác.'}</p>
               </div>
             )}
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer s={s} />
     </>
   )
 }

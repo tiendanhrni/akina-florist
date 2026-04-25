@@ -2,7 +2,7 @@ import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
-import { getCategories, getBestSellers, getSiteSettings } from '@/lib/queries'
+import { getCategories, getBestSellers, getSiteSettings, getNavPages } from '@/lib/queries'
 import styles from './page.module.css'
 
 export const revalidate = 60
@@ -10,35 +10,32 @@ export const revalidate = 60
 export async function generateMetadata() {
   const s = await getSiteSettings()
   return {
-    title: 'Đặt hoa',
-    description: s?.shopPageIntro || 'Khám phá các thiết kế hoa độc đáo tại Akina Florist.',
+    title: s?.navLabels?.shop || 'Đặt hoa',
+    description: s?.shopPageIntro || s?.seoDescription || '',
   }
 }
 
 export default async function SanPhamPage() {
-  const [categories, bestSellers, s] = await Promise.all([
-    getCategories(), getBestSellers(), getSiteSettings(),
+  const [categories, bestSellers, s, navPages] = await Promise.all([
+    getCategories(), getBestSellers(), getSiteSettings(), getNavPages(),
   ])
-
-  const heroTitle = s?.shopPageTitle || 'Thiết kế'
-  const heroSub = s?.shopPageSubtitle || 'Độc bản'
-  const intro = s?.shopPageIntro || 'Tại Akina Florist, mỗi thiết kế hoa là một tác phẩm mang dấu ấn riêng, được tạo nên từ những nguyên liệu tươi mới, kết hợp giữa kỹ thuật điêu luyện và tư duy duy mỹ tinh tế.'
-
   return (
     <>
       <PreHeader s={s} />
-      <Header />
+      <Header s={s} navPages={navPages} />
       <main>
         <div className={styles.hero}>
           <div className={styles.heroBg} />
           <div className={styles.heroContent}>
-            <h1 className="display-4" style={{ color: '#fff' }}>{heroTitle}</h1>
-            <div className={styles.heroSub}>{heroSub}</div>
+            <h1 className="display-4" style={{ color: '#fff' }}>{s?.shopPageTitle || 'Thiết kế'}</h1>
+            <div className={styles.heroSub}>{s?.shopPageSubtitle || 'Độc bản'}</div>
           </div>
         </div>
-        <section className={styles.intro}>
-          <div className="container"><p>{intro}</p></div>
-        </section>
+        {s?.shopPageIntro && (
+          <section className={styles.intro}>
+            <div className="container"><p>{s.shopPageIntro}</p></div>
+          </section>
+        )}
         <section className={styles.categories}>
           <div className="container">
             <div className={styles.catGrid}>
@@ -54,7 +51,7 @@ export default async function SanPhamPage() {
             </div>
           </div>
         </section>
-        {bestSellers && bestSellers.length > 0 && (
+        {bestSellers?.length > 0 && (
           <section className={styles.products}>
             <div className="container">
               <div className={styles.sectionHead}>
