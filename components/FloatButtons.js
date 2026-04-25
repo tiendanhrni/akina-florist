@@ -11,7 +11,7 @@ export default function FloatButtons({ data }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const hotline = data?.hotline || '0933486388'
+  const hotline = data?.hotline || '0383386434'
   const hotlineClean = hotline.replace(/\s/g, '')
   const zaloUrl = data?.zaloUrl || `https://zalo.me/${hotlineClean}`
   const messengerUrl = data?.messengerUrl || 'https://m.me/akinaflorist'
