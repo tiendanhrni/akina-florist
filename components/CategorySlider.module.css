@@ -19,7 +19,7 @@
   aspect-ratio: 4/6;
   overflow: hidden;
 }
-.card:hover .img img { transform: scale(2); }
+.card:hover .img img { transform: scale(3); }
 
 .img {
   position: absolute;
@@ -27,7 +27,7 @@
   overflow: hidden;
   background: #e8ddd5;
 }
-.img img { transition: transform 2s cubic-bezier(0.25,0.46,0.45,0.94) !important; }
+.img img { transition: transform 3s cubic-bezier(0.25,0.46,0.45,0.94) !important; }
 
 /* Label giống Ren — slide from left */
 .labelWrap {
