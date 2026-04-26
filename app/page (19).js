@@ -1,0 +1,19 @@
+.layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1280px; margin: 0 auto; padding: 3rem 2rem; }
+.gallery { position: sticky; top: 120px; height: fit-content; }
+.info { padding-top: 1rem; }
+.breadcrumb { display: flex; gap: 0.5rem; font-size: 11px; opacity: 0.45; letter-spacing: 0.08em; margin-bottom: 1.5rem; }
+.breadcrumb a:hover { opacity: 0.7; }
+.code { font-size: 11px; opacity: 0.35; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.name { font-family: 'Cormorant Garamond',serif; font-size: 2.5rem; font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
+.price { font-size: 1.2rem; letter-spacing: 0.05em; color: #BF9675; margin-bottom: 1.5rem; font-weight: 400; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+.tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border: 0.5px solid rgba(0,0,0,0.2); color: rgba(0,0,0,0.5); }
+.cta { margin-bottom: 2rem; }
+.accordion { border-top: 0.5px solid rgba(0,0,0,0.1); padding: 1.25rem 0; }
+.accTitle { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; font-weight: 500; }
+.accContent { font-size: 13px; line-height: 1.9; color: rgba(0,0,0,0.6); }
+.related { padding: 4rem 0; border-top: 0.5px solid rgba(0,0,0,0.08); }
+.relatedHead { margin-bottom: 2rem; }
+.relatedGrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+@media (max-width: 1024px) { .layout { grid-template-columns: 1fr; gap: 2rem; } .gallery { position: static; } .relatedGrid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 768px) { .name { font-size: 1.8rem; } }

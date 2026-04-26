@@ -1,177 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap');
+import PreHeader from '@/components/PreHeader'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import ProductCard from '@/components/ProductCard'
+import { getProductsByCategory, getCategories, getSiteSettings, getNavPages } from '@/lib/queries'
+import styles from './page.module.css'
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+export const dynamicParams = true
+export const revalidate = 60
 
-:root {
-  --primary: #577057;
-  --primary-dark: #3d5040;
-  --primary-light: #ffffeb;
-  --text: #111111;
-  --text-muted: rgba(0,0,0,0.5);
-  --bg: #ffffff;
-  --bg-warm: #faf8f5;
-  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
-  --sans: 'Montserrat', sans-serif;
-  --nav-height: 72px;
-  --prehead-height: 41px;
+export async function generateStaticParams() {
+  const categories = await getCategories()
+  return (categories || []).map(cat => ({ category: cat.slug?.current || cat.slug }))
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+export async function generateMetadata({ params }) {
+  const { category } = await params
+  const [categories, s] = await Promise.all([getCategories(), getSiteSettings()])
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
+  return {
+    title: `${cat?.title || 'Sản phẩm'} - ${s?.siteName || 'Akina Florist'}`,
+    description: cat?.description || s?.seoDescription || '',
+  }
 }
 
-body {
-  font-family: var(--sans);
-  font-weight: 400;
-  color: var(--text);
-  background: var(--bg);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+export default async function CategoryPage({ params }) {
+  const { category } = await params
+  const [products, categories, s, navPages] = await Promise.all([
+    getProductsByCategory(category),
+    getCategories(),
+    getSiteSettings(),
+    getNavPages(),
+  ])
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
+  const cp = s?.categoryPage || {}
 
-a { text-decoration: none; color: inherit; }
-button { border: none; background: none; cursor: pointer; font-family: inherit; }
-img { max-width: 100%; display: block; }
-
-.display-4 {
-  font-family: var(--serif);
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 300;
-  line-height: 1.05;
-  letter-spacing: 0.01em;
-  font-feature-settings: 'kern' 1, 'liga' 1;
+  return (
+    <>
+      <PreHeader s={s} />
+      <Header s={s} navPages={navPages} />
+      <main>
+        <div className={styles.hero}>
+          <div className={styles.overlay} />
+          <div className={styles.content}>
+            <h1 className="display-4" style={{ color: '#fff' }}>{cat?.title || 'Sản phẩm'}</h1>
+            {cat?.description && <p className={styles.desc}>{cat.description}</p>}
+          </div>
+        </div>
+        <nav className={styles.catNav}>
+          <div className="container">
+            <div className={styles.catNavInner}>
+              {(categories || []).map(c => (
+                <a key={c._id} href={`/san-pham/${c.slug?.current || c.slug}`}
+                  className={`${styles.catTab} ${(c.slug?.current || c.slug) === category ? styles.active : ''}`}>
+                  {c.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        </nav>
+        <section className={styles.section}>
+          <div className="container">
+            {products?.length > 0 ? (
+              <div className={styles.grid}>
+                {products.map(p => <ProductCard key={p._id} product={p} />)}
+              </div>
+            ) : (
+              <div className={styles.empty}>
+                <p>{cp.emptyText || 'Chưa có sản phẩm trong danh mục này.'}</p>
+                <p>{cp.emptySubtext || 'Vui lòng quay lại sau hoặc khám phá các danh mục khác.'}</p>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+      <Footer s={s} />
+    </>
+  )
 }
-.display-3 {
-  font-family: var(--serif);
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-  font-feature-settings: 'kern' 1, 'liga' 1;
-}
-.hw-1 {
-  font-family: var(--serif);
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 400;
-  color: var(--primary);
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-.body-3 {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.9;
-  letter-spacing: 0.01em;
-  color: #111111;
-}
-.title-2 {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-family: var(--sans);
-  color: #111111;
-}
-
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.slideup { animation: slideUp 0.7s ease both; }
-.fadein { animation: fadeIn 0.7s ease both; }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-.product-img-wrap { position: relative; overflow: hidden; }
-.product-img-wrap img { transition: opacity 0.4s ease; }
-.product-img-hover { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; }
-.product-card:hover .product-img-hover { opacity: 1; }
-
-.cat-label-bg {
-  position: absolute; inset: 0; background: #fff;
-  transform: translateX(-100%);
-  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
-  z-index: 0;
-}
-.category-card:hover .cat-label-bg { transform: translateX(0); }
-.cat-label-text { position: relative; z-index: 1; color: #fff; transition: color 0.5s; }
-.category-card:hover .cat-label-text { color: #1a1a1a; }
-
-.filter-tab {
-  padding: 0.4rem 1rem;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 0.5px solid rgba(0,0,0,0.2);
-  cursor: pointer;
-  transition: all 0.2s;
-  background: transparent;
-}
-.filter-tab.active, .filter-tab:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-.btn-primary {
-  display: inline-block; background: #fff; color: #1a1a1a;
-  padding: 10px 20px; font-size: 11px; letter-spacing: 0.1em;
-  text-transform: uppercase; border: 1px solid transparent;
-  transition: all 0.3s; cursor: pointer;
-}
-.btn-primary:hover { background: transparent; color: #fff; border-color: rgba(255,255,255,0.8); }
-.btn-outline {
-  display: inline-block; padding: 10px 24px; font-size: 11px;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  border: 1px solid var(--text); color: var(--text);
-  transition: all 0.3s; cursor: pointer;
-}
-.btn-outline:hover { background: var(--text); color: #fff; }
-.btn-green {
-  display: inline-block; padding: 12px 32px; font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  background: var(--primary); color: #fff;
-  border: 1px solid var(--primary); transition: all 0.3s; cursor: pointer;
-}
-.btn-green:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
-
-.page-hero {
-  position: relative; height: 50vh;
-  display: flex; align-items: flex-end;
-  overflow: hidden; background: #2a2a2a;
-}
-.page-hero-content { position: relative; z-index: 2; padding: 0 2rem 3rem; color: #fff; }
-.page-hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
-}
-
-.swiper-pagination-bullet {
-  width: 48px !important; height: 4px !important;
-  border-radius: 2px !important;
-  background: rgba(255,255,255,0.35) !important;
-  opacity: 1 !important;
-}
-.swiper-pagination-bullet-active { background: #577057 !important; }
