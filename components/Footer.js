@@ -6,17 +6,17 @@ const defaultStores = [
   { address: '87 Thạch Thị Thanh, phường Tân Định, HCM', mapUrl: 'https://maps.google.com' },
 ]
 
-export default function Footer({ s }) {
-  const hotline = s?.hotline || '0933 486 388'
+export default function Footer({ data }) {
+  const hotline = data?.hotline || '0933 486 388'
   const hotlineClean = hotline.replace(/\s/g, '')
-  const stores = s?.stores?.length > 0 ? s.stores : defaultStores
-  const facebook = s?.facebook || 'https://facebook.com'
-  const instagram = s?.instagram || 'https://instagram.com'
-  const tiktok = s?.tiktok || 'https://tiktok.com'
-  const copyright = s?.copyright || '©AKINA FLORIST 2025. ALL RIGHT RESERVED.'
-  const siteName = s?.siteName || 'AKINA FLORIST'
-  const fl = s?.footerLinks || {}
-  const ml = s?.mobileNavLabels || {}
+  const stores = data?.stores?.length > 0 ? s.stores : defaultStores
+  const facebook = data?.facebook || 'https://facebook.com'
+  const instagram = data?.instagram || 'https://instagram.com'
+  const tiktok = data?.tiktok || 'https://tiktok.com'
+  const copyright = data?.copyright || '©AKINA FLORIST 2025. ALL RIGHT RESERVED.'
+  const siteName = data?.siteName || 'AKINA FLORIST'
+  const fl = data?.footerLinks || {}
+  const ml = data?.mobileNavLabels || {}
 
   return (
     <footer className={styles.footer}>
