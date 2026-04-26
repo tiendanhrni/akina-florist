@@ -51,7 +51,7 @@ export default async function Home() {
   return (
     <>
       <PreHeader data={preHeaderData} />
-      <Header s={s} navPages={navPages} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <h1 className="sr-only">{s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist'}</h1>
         <HeroBanner banners={banners || []} />
