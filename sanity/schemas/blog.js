@@ -50,18 +50,8 @@ export default {
       name: 'categories',
       title: 'Danh mục bài viết',
       type: 'array',
-      of: [{
-        type: 'string',
-        options: {
-          list: [
-            { title: '🌸 Nghệ thuật cắm hoa', value: 'cam-hoa' },
-            { title: '💐 Ý nghĩa các loài hoa', value: 'y-nghia-hoa' },
-            { title: '🎉 Trang trí sự kiện', value: 'su-kien' },
-            { title: '📖 Câu chuyện Akina', value: 'cau-chuyen' },
-            { title: '💡 Tips & Tricks', value: 'tips' },
-          ],
-        },
-      }],
+      of: [{ type: 'reference', to: [{ type: 'blogCategory' }] }],
+      description: 'Chọn từ danh mục đã tạo trong Studio',
     },
     {
       name: 'tags',
