@@ -4,6 +4,14 @@ export default {
   type: 'document',
   fields: [
     {
+      name: 'isPublished',
+      title: '🟢 Hiển thị trên website',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Tắt để ẩn sản phẩm khỏi website và Google',
+      group: undefined,
+    },
+    {
       name: 'name',
       title: 'Tên sản phẩm',
       type: 'string',
