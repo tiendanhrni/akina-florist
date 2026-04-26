@@ -1,21 +1,47 @@
-.hero { position: relative; height: 60vh; display: flex; align-items: flex-end; overflow: hidden; }
-.heroBg { position: absolute; inset: 0; background: linear-gradient(160deg,#c8c0b0,#a09080); }
-.heroOverlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
-.heroContent { position: relative; z-index: 2; padding: 0 2rem 3rem; }
-.heroDesc { color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 0.2em; margin-top: 0.5rem; }
-.projects { padding: 4rem 0 6rem; }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
-.card { position: relative; overflow: hidden; display: block; aspect-ratio: 4/3; }
-.cardFeatured { grid-column: 1 / -1; aspect-ratio: 16/7; }
-.cardImg { position: absolute; inset: 0; }
-.card:hover .cardImg img { transform: scale(1.05); }
-.cardOverlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%); }
-.cardInfo { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem; z-index: 2; }
-.cardCat { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
-.cardTitle { font-family: 'Cormorant Garamond',serif; font-size: 1.5rem; font-weight: 300; color: #fff; margin-bottom: 0.25rem; }
-.cardFeatured .cardTitle { font-size: 2.5rem; }
-.cardClient { font-size: 12px; color: rgba(255,255,255,0.5); }
-.empty { text-align: center; padding: 6rem 0; }
-.empty h2 { margin-bottom: 1rem; }
-.empty p { font-size: 15px; color: rgba(0,0,0,0.5); }
-@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .cardFeatured { grid-column: 1; aspect-ratio: 4/3; } }
+import './globals.css'
+import { draftMode } from 'next/headers'
+import FloatButtons from '@/components/FloatButtons'
+import VisualEditingComponent from '@/components/VisualEditing'
+import Header from '@/components/Header'
+import { getSiteSettings, getNavPages } from '@/lib/queries'
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
+
+export async function generateMetadata() {
+  const s = await getSiteSettings()
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist',
+      template: `%s - ${s?.siteName || 'Akina Florist'}`,
+    },
+    description: s?.seoDescription || 'Akina được lấy cảm hứng từ hoa. Mỗi bó hoa tại Akina Florist là một tác phẩm nghệ thuật độc đáo.',
+    keywords: s?.seoKeywords || 'hoa, đặt hoa, hoa tươi, akina florist',
+    verification: s?.googleVerification ? { google: s.googleVerification } : undefined,
+    openGraph: {
+      title: s?.seoTitle || 'Câu chuyện của hoa & lá - Akina Florist',
+      description: s?.seoDescription || 'Mỗi bó hoa tại Akina Florist là một tác phẩm nghệ thuật độc đáo.',
+      type: 'website',
+      locale: 'vi_VN',
+      images: s?.ogImage ? [{ url: s.ogImage, width: 1200, height: 630 }] : [],
+    },
+  }
+}
+
+export default async function RootLayout({ children }) {
+  const [{ isEnabled: isDraftMode }, s, navPages] = await Promise.all([
+    draftMode(),
+    getSiteSettings(),
+    getNavPages(),
+  ])
+
+  return (
+    <html lang="vi">
+      <body>
+        {children}
+        <FloatButtons data={s} />
+        {isDraftMode && <VisualEditingComponent />}
+      </body>
+    </html>
+  )
+}
