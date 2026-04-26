@@ -2,6 +2,7 @@ import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { getBlog, getRelatedBlogs, getSiteSettings, getNavPages } from '@/lib/queries'
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -61,28 +62,21 @@ function PortableText({ blocks }) {
 export default async function BlogPostPage({ params }) {
   const { slug } = await params
   const [post, s, navPages] = await Promise.all([getBlog(slug), getSiteSettings(), getNavPages()])
+
+  if (!post) notFound()
+
   const bp = s?.blogPage || {}
   const hotline = s?.hotline || '0933 486 388'
   const siteName = s?.siteName || 'Akina Florist'
-
-  if (!post) return (
-    <>
-      <PreHeader s={s} /><Header s={s} navPages={navPages} />
-      <main style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem', padding: '4rem 2rem' }}>
-        <h1 className="display-3">Bài viết không tồn tại</h1>
-        <a href="/blog" className="btn-outline">Quay lại Blog</a>
-      </main>
-      <Footer s={s} />
-    </>
-  )
-
   const related = await getRelatedBlogs(slug, post.categories || [])
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
 
+  const preHeaderData = { text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }
+
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={preHeaderData} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.hero}>
           {post.cover && <Image src={post.cover} alt={post.title} fill priority style={{ objectFit: 'cover' }} sizes="100vw" />}
@@ -155,7 +149,7 @@ export default async function BlogPostPage({ params }) {
           </section>
         )}
       </main>
-      <Footer s={s} />
+      <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
     </>
   )
 }
