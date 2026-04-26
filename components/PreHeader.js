@@ -1,9 +1,9 @@
 import styles from './PreHeader.module.css'
-export default function PreHeader({ s }) {
+export default function PreHeader({ data }) {
   return (
     <div className={styles.wrap}>
-      <span>{s?.preHeaderText || 'Miễn phí giao hàng nội thành HCM'}</span>
-      <a href={s?.preHeaderLinkUrl || '/chinh-sach'}>{s?.preHeaderLinkText || 'XEM THÊM'}</a>
+      <span>{data?.text || 'Miễn phí giao hàng nội thành HCM'}</span>
+      <a href={data?.linkUrl || '/chinh-sach'}>{data?.linkText || 'XEM THÊM'}</a>
     </div>
   )
 }
