@@ -3,6 +3,7 @@ export const category = {
   title: 'Danh mục',
   type: 'document',
   fields: [
+    { name: 'isPublished', title: '🟢 Hiển thị trên website', type: 'boolean', initialValue: true, description: 'Tắt để ẩn khỏi website và Google' },
     { name: 'title', title: 'Tên danh mục', type: 'string', validation: Rule => Rule.required() },
     { name: 'slug', title: 'Đường dẫn URL', type: 'slug', options: { source: 'title' }, validation: Rule => Rule.required() },
     { name: 'description', title: 'Mô tả', type: 'text' },
@@ -96,6 +97,7 @@ export const workshop = {
   title: 'Workshop & Academy',
   type: 'document',
   fields: [
+    { name: 'isPublished', title: '🟢 Hiển thị trên website', type: 'boolean', initialValue: true, description: 'Tắt để ẩn khỏi website và Google' },
     { name: 'title', title: 'Tên khóa học', type: 'string', validation: Rule => Rule.required() },
     { name: 'slug', title: 'Đường dẫn', type: 'slug', options: { source: 'title' } },
     { name: 'image', title: 'Ảnh', type: 'image', options: { hotspot: true } },
@@ -113,6 +115,7 @@ export const project = {
   title: 'Dự án',
   type: 'document',
   fields: [
+    { name: 'isPublished', title: '🟢 Hiển thị trên website', type: 'boolean', initialValue: true, description: 'Tắt để ẩn khỏi website và Google' },
     { name: 'title', title: 'Tên dự án', type: 'string', validation: Rule => Rule.required() },
     { name: 'slug', title: 'Đường dẫn', type: 'slug', options: { source: 'title' } },
     { name: 'coverImage', title: 'Ảnh bìa', type: 'image', options: { hotspot: true } },
