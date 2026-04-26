@@ -24,10 +24,13 @@ export default async function ChinhSachPage() {
     ? s.policies.map(p => ({ id: p.id, title: p.title, content: p.content || [] }))
     : defaultPolicies
 
+  const preHeaderData = { text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }
+  const footerData = { hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }
+
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={preHeaderData} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.hero}>
           <h1 className="display-3" style={{ color: '#fff' }}>{s?.navLabels?.policy || 'Chính sách'}</h1>
@@ -52,7 +55,7 @@ export default async function ChinhSachPage() {
           </div>
         </div>
       </main>
-      <Footer s={s} />
+      <Footer data={footerData} />
     </>
   )
 }
