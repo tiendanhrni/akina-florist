@@ -1,7 +1,7 @@
 import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getBlogs, getSiteSettings, getNavPages } from '@/lib/queries'
+import { getBlogs, getBlogCategories, getSiteSettings, getNavPages } from '@/lib/queries'
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -12,23 +12,14 @@ export async function generateMetadata() {
   return { title: s?.navLabels?.blog || 'Blog', description: s?.blogPage?.heroEyebrow || s?.seoDescription || '' }
 }
 
-const CATEGORIES = [
-  { value: null, label: 'Tất cả' },
-  { value: 'cam-hoa',    label: '🌸 Nghệ thuật cắm hoa' },
-  { value: 'y-nghia-hoa',label: '💐 Ý nghĩa các loài hoa' },
-  { value: 'su-kien',    label: '🎉 Trang trí sự kiện' },
-  { value: 'cau-chuyen', label: '📖 Câu chuyện Akina' },
-  { value: 'tips',       label: '💡 Tips & Tricks' },
-]
-
 export default async function BlogPage() {
-  const [blogs, s, navPages] = await Promise.all([getBlogs({ limit: 12 }), getSiteSettings(), getNavPages()])
+  const [blogs, blogCategories, s, navPages] = await Promise.all([getBlogs({ limit: 12 }), getBlogCategories(), getSiteSettings(), getNavPages()])
   const bp = s?.blogPage || {}
 
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.hero}>
           <div className={styles.heroContent}>
@@ -39,9 +30,10 @@ export default async function BlogPage() {
         <div className={styles.filter}>
           <div className="container">
             <div className={styles.filterInner}>
-              {CATEGORIES.map(cat => (
-                <a key={cat.value || 'all'} href={cat.value ? `/blog?cat=${cat.value}` : '/blog'} className={styles.filterBtn}>
-                  {cat.value === null ? (bp.filterAll || 'Tất cả') : cat.label}
+              <a href="/blog" className={styles.filterBtn}>{bp.filterAll || 'Tất cả'}</a>
+              {(blogCategories || []).map(cat => (
+                <a key={cat.slug} href={`/blog?cat=${cat.slug}`} className={styles.filterBtn}>
+                  {cat.title}
                 </a>
               ))}
             </div>
@@ -62,7 +54,7 @@ export default async function BlogPage() {
                     <div className={styles.cardInfo}>
                       {post.categories?.[0] && (
                         <div className={styles.cardCat}>
-                          {CATEGORIES.find(c => c.value === post.categories[0])?.label || post.categories[0]}
+                          {(blogCategories || []).find(c => c.slug === post.categories?.[0]?.slug?.current)?.title || post.categories?.[0]?.title || ''}
                         </div>
                       )}
                       <h2 className={styles.cardTitle}>{post.title}</h2>
