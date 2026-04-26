@@ -20,7 +20,7 @@ const heroBlock = {
     },
     { name: 'backgroundImage', title: 'Ảnh nền', type: 'image', options: { hotspot: true } },
     { name: 'backgroundVideo', title: 'Video nền (URL .mp4)', type: 'url' },
-    { name: 'backgroundColor', title: 'Màu nền (hex)', type: 'string', initialValue: '#577057' },
+    { name: 'backgroundColor', title: 'Màu nền (hex)', type: 'string', initialValue: '#BF9675' },
     {
       name: 'overlay',
       title: 'Độ tối overlay (0-1)',
@@ -32,7 +32,7 @@ const heroBlock = {
       name: 'textColor',
       title: 'Màu chữ',
       type: 'string',
-      options: { list: [{ title: 'Trắng', value: '#ffffff' }, { title: 'Đen', value: '#1a1a1a' }, { title: 'Xanh lá', value: '#577057' }] },
+      options: { list: [{ title: 'Trắng', value: '#ffffff' }, { title: 'Đen', value: '#1a1a1a' }, { title: 'Xanh lá', value: '#BF9675' }] },
       initialValue: '#ffffff',
     },
     {
@@ -184,7 +184,7 @@ const ctaBlock = {
         preview: { select: { title: 'text' } },
       }],
     },
-    { name: 'background', title: 'Màu nền', type: 'string', options: { list: [{ title: 'Trắng', value: '#ffffff' }, { title: 'Xanh lá', value: '#577057' }, { title: 'Kem', value: '#faf8f5' }, { title: 'Tối', value: '#1a1a1a' }] }, initialValue: '#577057' },
+    { name: 'background', title: 'Màu nền', type: 'string', options: { list: [{ title: 'Trắng', value: '#ffffff' }, { title: 'Xanh lá', value: '#BF9675' }, { title: 'Kem', value: '#faf8f5' }, { title: 'Tối', value: '#1a1a1a' }] }, initialValue: '#BF9675' },
     { name: 'textColor', title: 'Màu chữ', type: 'string', options: { list: [{ title: 'Trắng', value: '#ffffff' }, { title: 'Đen', value: '#1a1a1a' }] }, initialValue: '#ffffff' },
     { name: 'textAlign', title: 'Căn chỉnh', type: 'string', options: { list: [{ title: 'Giữa', value: 'center' }, { title: 'Trái', value: 'left' }] }, initialValue: 'center' },
   ],
