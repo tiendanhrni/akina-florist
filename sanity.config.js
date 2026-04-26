@@ -100,6 +100,9 @@ export default defineConfig({
 
             // ── BLOG ──
             S.listItem()
+              .title('📂 Danh mục Blog')
+              .child(S.documentTypeList('blogCategory').title('Danh mục Blog')),
+            S.listItem()
               .title('✍️ Blog')
               .icon(() => '✍️')
               .child(
