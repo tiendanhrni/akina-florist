@@ -13,7 +13,6 @@ const defaultItems = [
 export default function WhySection({ items, title }) {
   const [active, setActive] = useState(0)
   const data = items?.length > 0 ? items : defaultItems
-  const title = title || 'Vì sao Akina được yêu thích?'
   return (
     <section className={styles.section}>
       <div className={styles.overlay} />
