@@ -10,10 +10,10 @@ const defaultItems = [
   { _id: '4', title: 'Nguồn nguyên liệu đa dạng & luôn sẵn sàng', description: 'Hoa tươi nội địa và nhập khẩu được cập nhật mỗi ngày.', image: null },
 ]
 
-export default function WhySection({ items, s }) {
+export default function WhySection({ items, title }) {
   const [active, setActive] = useState(0)
   const data = items?.length > 0 ? items : defaultItems
-  const title = s?.whySectionTitle || 'Vì sao Akina được yêu thích?'
+  const title = title || 'Vì sao Akina được yêu thích?'
   return (
     <section className={styles.section}>
       <div className={styles.overlay} />
