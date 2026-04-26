@@ -2,7 +2,6 @@ import './globals.css'
 import { draftMode } from 'next/headers'
 import FloatButtons from '@/components/FloatButtons'
 import VisualEditingComponent from '@/components/VisualEditing'
-import Header from '@/components/Header'
 import { getSiteSettings, getNavPages } from '@/lib/queries'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://akina-florist.vercel.app'
@@ -29,17 +28,23 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  const [{ isEnabled: isDraftMode }, s, navPages] = await Promise.all([
+  const [{ isEnabled: isDraftMode }, s] = await Promise.all([
     draftMode(),
     getSiteSettings(),
-    getNavPages(),
   ])
+
+  // Chỉ truyền primitive values vào Client Component
+  const floatData = {
+    hotline: s?.hotline || '0933 486 388',
+    zaloUrl: s?.zaloUrl || '',
+    messengerUrl: s?.messengerUrl || '',
+  }
 
   return (
     <html lang="vi">
       <body>
         {children}
-        <FloatButtons data={s} />
+        <FloatButtons data={floatData} />
         {isDraftMode && <VisualEditingComponent />}
       </body>
     </html>
