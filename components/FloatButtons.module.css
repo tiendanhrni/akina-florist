@@ -1,6 +1,6 @@
 .wrap { position: fixed; bottom: 5rem; right: 1rem; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
-.btn { width: 48px; height: 48px; border-radius: 50%; background: #577057; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s; box-shadow: 0 2px 12px rgba(87,112,87,0.3); }
-.btn:hover { background: #3d5040; transform: scale(1.08); }
-.topBtn { background: #fff; border: 1px solid rgba(87,112,87,0.3); }
+.btn { width: 48px; height: 48px; border-radius: 50%; background: #BF9675; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s; box-shadow: 0 2px 12px rgba(191,150,117,0.3); }
+.btn:hover { background: #966548; transform: scale(1.08); }
+.topBtn { background: #fff; border: 1px solid rgba(191,150,117,0.3); }
 .topBtn:hover { background: #f0f5f0; }
 @media (max-width: 768px) { .wrap { bottom: 6rem; } }

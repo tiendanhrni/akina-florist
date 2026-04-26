@@ -9,7 +9,7 @@
 .prose p { margin-bottom: 1.25rem; }
 .prose h2 { font-family: var(--serif); font-size: clamp(22px, 3vw, 32px); font-weight: 300; margin: 2rem 0 1rem; color: #1a1a1a; }
 .prose h3 { font-family: var(--serif); font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; margin: 1.5rem 0 0.75rem; }
-.prose blockquote { border-left: 3px solid #577057; padding: 0.75rem 1.5rem; font-family: var(--serif); font-style: italic; color: rgba(0,0,0,0.5); background: #f9fdf9; margin: 1.5rem 0; }
+.prose blockquote { border-left: 3px solid #BF9675; padding: 0.75rem 1.5rem; font-family: var(--serif); font-style: italic; color: rgba(0,0,0,0.5); background: #f9fdf9; margin: 1.5rem 0; }
 
 @media (max-width: 768px) {
   .heroButtons { flex-direction: column; align-items: center; }

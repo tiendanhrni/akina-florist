@@ -11,7 +11,7 @@
 @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 .pagination { position: absolute; bottom: 2.5rem; right: 2.5rem; display: flex; gap: 8px; z-index: 3; }
 .bullet { width: 48px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.35); padding: 0; transition: background 0.3s; }
-.active { background: #577057; }
+.active { background: #BF9675; }
 @media (max-width: 768px) {
   .hero { height: 100svh; }
   .content { padding: 0 1.5rem 2rem; }

@@ -6,7 +6,7 @@ import styles from './BlockRenderer.module.css'
 function HeroBlock({ block }) {
   const {
     heading, subheading, body,
-    backgroundType = 'image', backgroundImage, backgroundVideo, backgroundColor = '#577057',
+    backgroundType = 'image', backgroundImage, backgroundVideo, backgroundColor = '#BF9675',
     overlay = 0.4, textColor = '#ffffff', textAlign = 'center', height = '80vh',
     buttons = [],
   } = block
@@ -63,7 +63,7 @@ function TextBlock({ block }) {
     <section style={{ background, padding: `${paddingY} 0` }}>
       <div className="container">
         <div style={{ maxWidth, margin: isCenter ? '0 auto' : '0', textAlign: isCenter ? 'center' : 'left' }}>
-          {eyebrow && <div className="title-2" style={{ color: '#577057', marginBottom: '0.5rem', opacity: 0.7 }}>{eyebrow}</div>}
+          {eyebrow && <div className="title-2" style={{ color: '#BF9675', marginBottom: '0.5rem', opacity: 0.7 }}>{eyebrow}</div>}
           {heading && <h2 className="display-3" style={{ marginBottom: body ? '1.5rem' : 0 }}>{heading}</h2>}
           {body && (
             <div className={styles.prose}>
@@ -169,7 +169,7 @@ function ImageTextBlock({ block }) {
             {image && <Image src={image} alt={heading || ''} fill style={{ objectFit: 'cover' }} sizes="50vw" />}
           </div>
           <div style={{ direction: 'ltr' }}>
-            {eyebrow && <div className="title-2" style={{ color: '#577057', marginBottom: '0.5rem', opacity: 0.7 }}>{eyebrow}</div>}
+            {eyebrow && <div className="title-2" style={{ color: '#BF9675', marginBottom: '0.5rem', opacity: 0.7 }}>{eyebrow}</div>}
             {heading && <h2 className="display-3" style={{ marginBottom: '1.5rem' }}>{heading}</h2>}
             {body && (
               <div className={styles.prose}>
@@ -216,7 +216,7 @@ function ProductsBlock({ block, products = [] }) {
               </div>
               <div style={{ fontSize: 13, color: 'rgba(0,0,0,0.4)', marginBottom: '0.25rem' }}>{p.code}</div>
               <div style={{ fontSize: 15, marginBottom: '0.25rem' }}>{p.name}</div>
-              <div style={{ fontSize: 13, color: '#577057' }}>
+              <div style={{ fontSize: 13, color: '#BF9675' }}>
                 {p.price ? new Intl.NumberFormat('vi-VN').format(p.price) + ' VND' : p.priceNote || 'Liên hệ'}
               </div>
             </a>
@@ -259,7 +259,7 @@ function GalleryBlock({ block }) {
 // ─── CTA BLOCK ───────────────────────────────────────
 
 function CTABlock({ block }) {
-  const { heading, body, buttons = [], background = '#577057', textColor = '#ffffff', textAlign = 'center' } = block
+  const { heading, body, buttons = [], background = '#BF9675', textColor = '#ffffff', textAlign = 'center' } = block
 
   return (
     <section style={{ background, padding: '5rem 0' }}>

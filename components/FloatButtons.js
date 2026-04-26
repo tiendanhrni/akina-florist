@@ -35,7 +35,7 @@ export default function FloatButtons({ data }) {
         <button className={`${styles.btn} ${styles.topBtn}`}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Lên đầu trang">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M18 15l-6-6-6 6" stroke="#577057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M18 15l-6-6-6 6" stroke="#BF9675" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
       )}
