@@ -6,7 +6,7 @@ import ProductGallery from '@/components/ProductGallery'
 import { getProduct, getRelatedProducts, getSiteSettings, getNavPages } from '@/lib/queries'
 import styles from './page.module.css'
 
-export const dynamicParams = true
+export const dynamic = "force-dynamic"
 export const revalidate = 60
 
 export async function generateMetadata({ params }) {
