@@ -21,12 +21,15 @@ const defaultPolicies = [
 export default async function ChinhSachPage() {
   const [s, navPages] = await Promise.all([getSiteSettings(), getNavPages()])
   const policies = s?.policies?.length > 0
-    ? s.policies.map(p => ({ id: p.id, title: p.title, content: p.content || [] }))
+    ? s.policies.map(function(p) { return { id: p.id, title: p.title, content: p.content || [] } })
     : defaultPolicies
+
+  const preHeaderData = { text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }
+  const footerData = { hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }
 
   return (
     <>
-      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
+      <PreHeader data={preHeaderData} />
       <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.hero}>
@@ -36,23 +39,25 @@ export default async function ChinhSachPage() {
           <div className="container">
             <div className={styles.layout}>
               <nav className={styles.nav}>
-                {policies.map(p => <a key={p.id} href={`#${p.id}`} className={styles.navLink}>{p.title}</a>)}
+                {policies.map(function(p) { return <a key={p.id} href={'#' + p.id} className={styles.navLink}>{p.title}</a> })}
               </nav>
               <div className={styles.articles}>
-                {policies.map(p => (
-                  <article key={p.id} id={p.id} className={styles.article}>
-                    <h2 className={styles.articleTitle}>{p.title}</h2>
-                    <ul className={styles.list}>
-                      {p.content.map((item, i) => <li key={i}>{item}</li>)}
-                    </ul>
-                  </article>
-                ))}
+                {policies.map(function(p) {
+                  return (
+                    <article key={p.id} id={p.id} className={styles.article}>
+                      <h2 className={styles.articleTitle}>{p.title}</h2>
+                      <ul className={styles.list}>
+                        {p.content.map(function(item, i) { return <li key={i}>{item}</li> })}
+                      </ul>
+                    </article>
+                  )
+                })}
               </div>
             </div>
           </div>
         </div>
       </main>
-      <Footer s={s} />
+      <Footer data={footerData} />
     </>
   )
 }
