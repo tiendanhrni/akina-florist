@@ -1,5 +1,6 @@
 import product from './product'
 import blog from './blog'
+import blogCategory from './blogCategory'
 import page from './page'
 import siteSettings from './siteSettings'
 import {
@@ -12,6 +13,7 @@ export const schemaTypes = [
   page,
   product,
   blog,
+  blogCategory,
   category,
   banner,
   brand,
