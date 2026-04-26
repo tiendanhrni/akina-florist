@@ -4,6 +4,7 @@ export default {
   title: 'Bài viết Blog',
   type: 'document',
   fields: [
+    { name: 'isPublished', title: '🟢 Hiển thị trên website', type: 'boolean', initialValue: true, description: 'Tắt để ẩn bài viết khỏi website và Google' },
     {
       name: 'title',
       title: 'Tiêu đề bài viết',
