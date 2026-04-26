@@ -2,68 +2,77 @@ import PreHeader from '@/components/PreHeader'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
-import { getCategories, getBestSellers, getSiteSettings, getNavPages } from '@/lib/queries'
+import { getProductsByCategory, getCategories, getSiteSettings, getNavPages } from '@/lib/queries'
+import { notFound } from 'next/navigation'
 import styles from './page.module.css'
 
+export const dynamicParams = true
 export const revalidate = 60
 
-export async function generateMetadata() {
-  const s = await getSiteSettings()
+export async function generateStaticParams() {
+  const categories = await getCategories()
+  return (categories || []).map(cat => ({ category: cat.slug?.current || cat.slug }))
+}
+
+export async function generateMetadata({ params }) {
+  const { category } = await params
+  const [categories, s] = await Promise.all([getCategories(), getSiteSettings()])
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
   return {
-    title: s?.navLabels?.shop || 'Đặt hoa',
-    description: s?.shopPageIntro || s?.seoDescription || '',
+    title: `${cat?.title || 'Sản phẩm'} - ${s?.siteName || 'Akina Florist'}`,
+    description: cat?.description || s?.seoDescription || '',
   }
 }
 
-export default async function SanPhamPage() {
-  const [categories, bestSellers, s, navPages] = await Promise.all([
-    getCategories(), getBestSellers(), getSiteSettings(), getNavPages(),
+export default async function CategoryPage({ params }) {
+  const { category } = await params
+  const [products, categories, s, navPages] = await Promise.all([
+    getProductsByCategory(category),
+    getCategories(),
+    getSiteSettings(),
+    getNavPages(),
   ])
+  const cat = (categories || []).find(c => (c.slug?.current || c.slug) === category)
+  const cp = s?.categoryPage || {}
+
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.hero}>
-          <div className={styles.heroBg} />
-          <div className={styles.heroContent}>
-            <h1 className="display-4" style={{ color: '#fff' }}>{s?.shopPageTitle || 'Thiết kế'}</h1>
-            <div className={styles.heroSub}>{s?.shopPageSubtitle || 'Độc bản'}</div>
+          <div className={styles.overlay} />
+          <div className={styles.content}>
+            <h1 className="display-4" style={{ color: '#fff' }}>{cat?.title || 'Sản phẩm'}</h1>
+            {cat?.description && <p className={styles.desc}>{cat.description}</p>}
           </div>
         </div>
-        {s?.shopPageIntro && (
-          <section className={styles.intro}>
-            <div className="container"><p>{s.shopPageIntro}</p></div>
-          </section>
-        )}
-        <section className={styles.categories}>
+        <nav className={styles.catNav}>
           <div className="container">
-            <div className={styles.catGrid}>
-              {(categories || []).map((cat, i) => (
-                <a key={cat._id} href={`/san-pham/${cat.slug?.current || cat.slug}`} className={styles.catCard}>
-                  <div className={styles.catImg} style={{ background: ['#c8b8a8','#b8c8b8','#c0b0c0','#c8c0b0','#b0c0c0','#c0b0b8'][i % 6] }} />
-                  <div className={styles.catLabel}>
-                    <div className={styles.catLabelBg} />
-                    <span className={styles.catLabelText}>{cat.title}</span>
-                  </div>
+            <div className={styles.catNavInner}>
+              {(categories || []).map(c => (
+                <a key={c._id} href={`/san-pham/${c.slug?.current || c.slug}`}
+                  className={`${styles.catTab} ${(c.slug?.current || c.slug) === category ? styles.active : ''}`}>
+                  {c.title}
                 </a>
               ))}
             </div>
           </div>
-        </section>
-        {bestSellers?.length > 0 && (
-          <section className={styles.products}>
-            <div className="container">
-              <div className={styles.sectionHead}>
-                <div className="title-2" style={{ opacity: 0.45 }}>Nổi bật</div>
-                <h2 className="display-3">Bán chạy</h2>
-              </div>
+        </nav>
+        <section className={styles.section}>
+          <div className="container">
+            {products?.length > 0 ? (
               <div className={styles.grid}>
-                {bestSellers.map(p => <ProductCard key={p._id} product={p} />)}
+                {products.map(p => <ProductCard key={p._id} product={p} />)}
               </div>
-            </div>
-          </section>
-        )}
+            ) : (
+              <div className={styles.empty}>
+                <p>{cp.emptyText || 'Chưa có sản phẩm trong danh mục này.'}</p>
+                <p>{cp.emptySubtext || 'Vui lòng quay lại sau hoặc khám phá các danh mục khác.'}</p>
+              </div>
+            )}
+          </div>
+        </section>
       </main>
       <Footer s={s} />
     </>
