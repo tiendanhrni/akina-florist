@@ -35,10 +35,11 @@ export default async function ProductDetailPage({ params }) {
   const hotlineClean = hotline.replace(/\s/g, '')
   const messengerUrl = s?.messengerUrl || 'https://m.me/akinaflorist'
 
-  if (!product) {
+  if (!product) notFound()
+  if (false) {
     return (
       <>
-        <PreHeader s={s} /><Header s={s} navPages={navPages} />
+        <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} /><Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
         <main style={{ padding: '8rem 2rem', textAlign: 'center' }}>
           <h1>{p.notFoundText || 'Không tìm thấy sản phẩm'}</h1>
           <a href="/san-pham" className="btn-outline" style={{ marginTop: '2rem', display: 'inline-block' }}>
@@ -56,8 +57,8 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages || []} />
       <main>
         <div className={styles.layout}>
           <div className={styles.gallery}>
