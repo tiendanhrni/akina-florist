@@ -46,7 +46,7 @@ export default async function ProductDetailPage({ params }) {
             {p.backToShop || 'Quay lại'}
           </a>
         </main>
-        <Footer s={s} />
+        <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
       </>
     )
   }
@@ -123,7 +123,7 @@ export default async function ProductDetailPage({ params }) {
           </section>
         )}
       </main>
-      <Footer s={s} />
+      <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
     </>
   )
 }

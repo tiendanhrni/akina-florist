@@ -74,7 +74,7 @@ export default async function CategoryPage({ params }) {
           </div>
         </section>
       </main>
-      <Footer s={s} />
+      <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
     </>
   )
 }

@@ -38,7 +38,7 @@ export default async function CustomPage({ params }) {
           <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', fontWeight: 300, marginTop: '-2rem' }}>Trang không tồn tại</h1>
           <a href="/" className="btn-outline" style={{ marginTop: '1rem' }}>Về trang chủ</a>
         </main>
-        <Footer s={s} />
+        <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
       </>
     )
   }
@@ -54,7 +54,7 @@ export default async function CustomPage({ params }) {
       <main>
         <BlockRenderer blocks={page.blocks} siteSettings={s} products={products} />
       </main>
-      <Footer s={s} />
+      <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
     </>
   )
 }
