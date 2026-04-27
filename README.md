@@ -1,5 +1,4 @@
 # 🌸 Akina Florist 
-
 Website thương mại điện tử cho Akina Florist — xây dựng bằng **Next.js 15** + **Sanity CMS**, deploy trên **Vercel**.
 
 ## 📋 Yêu cầu
