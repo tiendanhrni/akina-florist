@@ -67,7 +67,7 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
-        <WhySection items={whyItems || []} s={s} />
+        <WhySection items={whyItems || []} title={s?.whySectionTitle} />
         <section className={styles.values}>
           <div className="container">
             <div className={styles.valuesHead}>

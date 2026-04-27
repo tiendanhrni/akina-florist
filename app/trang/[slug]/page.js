@@ -52,7 +52,7 @@ export default async function CustomPage({ params }) {
       <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
       <Header />
       <main>
-        <BlockRenderer blocks={page.blocks} siteSettings={s} products={products} />
+        <BlockRenderer blocks={page.blocks} siteSettings={{}} products={products} />
       </main>
       <Footer data={{ hotline: s?.hotline, siteName: s?.siteName, copyright: s?.copyright, facebook: s?.facebook, instagram: s?.instagram, tiktok: s?.tiktok, zaloUrl: s?.zaloUrl, messengerUrl: s?.messengerUrl, stores: s?.stores || [], footerLinks: s?.footerLinks || {}, mobileNavLabels: s?.mobileNavLabels || {} }} />
     </>
