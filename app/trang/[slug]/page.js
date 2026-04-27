@@ -32,7 +32,7 @@ export default async function CustomPage({ params }) {
   if (!page || !page.isPublished) {
     return (
       <>
-        <PreHeader s={s} /><Header />
+        <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} /><Header />
         <main style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem', textAlign: 'center', padding: '4rem 2rem' }}>
           <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 120, fontWeight: 300, opacity: 0.06, lineHeight: 1 }}>404</div>
           <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', fontWeight: 300, marginTop: '-2rem' }}>Trang không tồn tại</h1>
@@ -49,7 +49,7 @@ export default async function CustomPage({ params }) {
 
   return (
     <>
-      <PreHeader s={s} />
+      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
       <Header />
       <main>
         <BlockRenderer blocks={page.blocks} siteSettings={s} products={products} />

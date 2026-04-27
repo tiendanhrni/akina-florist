@@ -36,8 +36,8 @@ export default async function CategoryPage({ params }) {
 
   return (
     <>
-      <PreHeader s={s} />
-      <Header s={s} navPages={navPages} />
+      <PreHeader data={{ text: s?.preHeaderText, linkText: s?.preHeaderLinkText, linkUrl: s?.preHeaderLinkUrl }} />
+      <Header siteName={s?.siteName} navLabels={s?.navLabels} navPages={navPages} />
       <main>
         <div className={styles.hero}>
           <div className={styles.overlay} />
